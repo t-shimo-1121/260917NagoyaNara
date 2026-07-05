@@ -31,12 +31,18 @@ body{
   font-family:"Zen Maru Gothic",'Hiragino Maru Gothic ProN','Yu Gothic',sans-serif;
   font-size:16.5px;
   line-height:1.8;
-  padding-bottom:60px;
+  padding-bottom:calc(60px + env(safe-area-inset-bottom, 0px));
+}
+/* ノッチ／Dynamic Island 領域のマスク（Safariでは高さ0で非表示） */
+body::before{
+  content:"";position:fixed;top:0;left:0;right:0;
+  height:env(safe-area-inset-top, 0px);
+  background:var(--ink);z-index:30;
 }
 .wrap{max-width:680px;margin:0 auto;padding:0 16px}
 
 /* ---------- header ---------- */
-header{padding:34px 0 0;text-align:center}
+header{padding:calc(34px + env(safe-area-inset-top, 0px)) 0 0;text-align:center}
 .eyebrow{
   display:inline-block;font-size:12px;letter-spacing:.35em;color:var(--ink-soft);
   border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:4px 14px 4px 18px;
@@ -56,7 +62,7 @@ h1{
 
 /* ---------- nav（概要＋各日ダイレクト） ---------- */
 nav{
-  position:sticky;top:0;z-index:20;background:var(--paper);
+  position:sticky;top:env(safe-area-inset-top, 0px);z-index:20;background:var(--paper);
   padding:12px 0 0;margin-top:18px;
   border-bottom:1.5px solid var(--ink);
 }
