@@ -3,651 +3,981 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<meta name="theme-color" content="#33422F">
+<meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<title>旅のしおり｜名古屋・奈良 2026.9.19–9.23</title>
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="名古屋・奈良しおり">
+<meta name="theme-color" content="#3E5238">
+<title>名古屋・奈良 2026.9.19-23</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Kaisei+Decol:wght@500;700&family=Zen+Maru+Gothic:wght@400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@700;900&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
+/* ══════════════════════════════════════════════════════════════
+   ① テーマ設定 ── 表紙が決まったら、基本ここだけ触れば色が変わります
+      ・数値は「色相（0〜360）」。彩度・明度は自動で追従します。
+      ・プリセット例
+          大峰の緑  : base 88 / brand 128 / d1 205 / d2 22 / d3 152 / d4 96 / d5 258 / pack 42  ← 現在の設定
+          秋の奈良  : base 34 / brand 20  / d1 200 / d2 14 / d3 96  / d4 40 / d5 260 / pack 38
+          モノトーン: base 220（全部 220 に揃える）
+   ══════════════════════════════════════════════════════════════ */
 :root{
-  --paper:#F4F5EE;
-  --card:#FDFDF9;
-  --ink:#33422F;
-  --ink-soft:#6E7B67;
-  --line:#D9DDCC;
-  --accent:#BC4B26;      /* 朱 — 未予約・要注意 */
-  --ok:#4A7A55;          /* 深緑 — 予約済 */
-  --neutral:#8A927F;     /* 予約不要 */
-  --peak:#E9EDDF;
-  --radius:14px;
+  --h-base:  88;    /* 紙・文字・罫線のベース色相 */
+  --h-brand:128;    /* 表紙まわり・見出しのアクセント */
+  --h-pack:  42;    /* 準備タブ */
+  --h-d1:   205;    /* 9/19 名古屋へ（空路） */
+  --h-d2:    22;    /* 9/20 家族観光 → 奈良 */
+  --h-d3:   152;    /* 9/21 大台ヶ原 */
+  --h-d4:    96;    /* 9/22 八経ヶ岳 */
+  --h-d5:   258;    /* 9/23 帰路 */
+
+  --fs-base: 20px;  /* ② 全体の文字サイズ（小画面は下部で自動調整） */
+  --font-display:'Zen Maru Gothic', system-ui, sans-serif;
+  --font-body:'Noto Sans JP', system-ui, sans-serif;
+
+  /* ─ 以下は自動で決まる派生色（通常は触らなくてOK） ─ */
+  --paper:      hsl(var(--h-base), 26%, 94%);
+  --paper-2:    hsl(var(--h-base), 28%, 90%);
+  --panel:      hsl(var(--h-base), 40%, 99%);
+  --ink:        hsl(var(--h-base), 20%, 16%);
+  --ink-2:      hsl(var(--h-base), 12%, 38%);
+  --ink-3:      hsl(var(--h-base), 10%, 55%);
+  --line:       hsl(var(--h-base), 20%, 84%);
+  --line-soft:  hsl(var(--h-base), 20%, 90%);
+  --brand:      hsl(var(--h-brand), 40%, 30%);
+  --brand-bg:   hsl(var(--h-brand), 40%, 93%);
+  --alert:      hsl(14, 62%, 44%);   /* 未予約・要注意の朱 */
+
+  --radius: 14px;
+  --col-time: 3.45rem;  /* 時刻カラムの幅（"10:30" がぴったり入る幅） */
+  --col-ico:  1.55rem;  /* アイコンカラムの幅 */
+  --col-gap:  .45rem;
+  --row-pad:  .68rem;   /* タイムライン左右の余白 */
+  --lh-main:  30px;     /* 上段の行高（px固定で行ズレを防ぐ） */
+  --lh-sub:   26px;     /* 下段の行高 */
 }
-*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-html{scroll-behavior:smooth}
+
+*{box-sizing:border-box;margin:0;padding:0;}
+html{font-size:var(--fs-base);-webkit-text-size-adjust:100%;}
 body{
-  background:var(--paper);
+  font-family:var(--font-body);
   color:var(--ink);
-  font-family:"Zen Maru Gothic",'Hiragino Maru Gothic ProN','Yu Gothic',sans-serif;
-  font-size:17.5px;
-  line-height:1.85;
-  padding-bottom:60px;
+  line-height:1.7;
+  background-color:var(--paper);
+  background-image:radial-gradient(hsla(var(--h-base),25%,45%,.10) 1.1px, transparent 1.1px);
+  background-size:22px 22px;
+  padding:0 0 3rem;
+  -webkit-font-smoothing:antialiased;
 }
-.wrap{max-width:680px;margin:0 auto;padding:0 16px}
+body::before{ /* iPhoneのノッチ／Dynamic Island下の帯 */
+  content:"";position:fixed;top:0;left:0;right:0;z-index:50;
+  height:env(safe-area-inset-top);background:var(--paper);
+}
+.wrap{max-width:680px;margin:0 auto;padding:.8rem .5rem 0;}
+.ic{width:1em;height:1em;display:inline-block;fill:none;stroke:currentColor;
+    stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round;}
 
-/* ---------- header ---------- */
-header{padding:34px 0 0;text-align:center}
-.eyebrow{
-  display:inline-block;font-size:13px;letter-spacing:.35em;color:var(--ink-soft);
-  border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:4px 14px 4px 18px;
+/* ───────── 表紙 ───────── */
+.cover{margin:.2rem 0 1rem;filter:drop-shadow(0 8px 18px hsla(var(--h-base),30%,25%,.18));}
+.cover-frame{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:9px;}
+.cover-frame img{width:100%;display:block;border-radius:8px;}
+/* 画像を入れるまでの仮置き。imgに差し替えるとそのまま同じ枠に収まります */
+.cover-ph{
+  aspect-ratio:4/3;border-radius:8px;
+  border:2px dashed var(--line);
+  background:linear-gradient(160deg, var(--brand-bg), var(--paper-2));
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.5rem;
+  color:var(--ink-3);font-size:.72rem;font-weight:500;letter-spacing:.04em;text-align:center;
+  padding:1rem;
 }
-h1{
-  font-family:"Kaisei Decol",serif;font-weight:700;
-  font-size:clamp(27px,7.5vw,36px);letter-spacing:.08em;margin:14px 0 4px;
+.ridge{display:block;width:100%;max-width:420px;overflow:visible;}
+.ridge path{fill:none;stroke:var(--brand);stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:3 4;}
+.ridge circle{fill:var(--alert);}
+.ridge text{font-family:var(--font-body);font-size:9px;fill:var(--ink-3);letter-spacing:.05em;}
+.cover-cap{padding:.7rem .2rem .2rem;text-align:center;}
+.cover-cap h1{
+  font-family:var(--font-display);font-weight:900;font-size:1.6rem;
+  line-height:1.25;letter-spacing:.02em;color:var(--ink);
 }
-.dates{font-size:16px;color:var(--ink-soft);letter-spacing:.12em}
-.party{font-size:14.5px;color:var(--ink-soft);margin-top:2px}
+.cover-cap .date{
+  margin-top:.15rem;font-size:.86rem;font-weight:700;color:var(--brand);letter-spacing:.06em;
+  font-variant-numeric:tabular-nums;
+}
+.cover-cap .party{margin-top:.1rem;font-size:.76rem;color:var(--ink-3);letter-spacing:.04em;}
+.cover-cap .count{margin-top:.1rem;font-size:.76rem;color:var(--ink-3);letter-spacing:.04em;}
 
-/* 稜線モチーフ */
-.ridge{display:block;width:100%;max-width:560px;margin:10px auto -6px;overflow:visible}
-.ridge path{fill:none;stroke:var(--ink);stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:3 4}
-.ridge text{font-family:"Zen Maru Gothic",sans-serif;font-size:9px;fill:var(--ink-soft);letter-spacing:.05em}
-.ridge circle{fill:var(--accent)}
-
-/* ---------- nav（概要＋各日ダイレクト） ---------- */
-nav{
-  position:sticky;top:0;z-index:20;background:var(--paper);
-  padding:12px 0 0;margin-top:18px;
-  border-bottom:1.5px solid var(--ink);
+/* ───────── タブ（6枚なので横スクロール） ───────── */
+.tabs{
+  position:sticky;top:env(safe-area-inset-top);z-index:30;
+  display:flex;gap:.35rem;
+  padding:.55rem .1rem .6rem;margin-bottom:.9rem;
+  background:linear-gradient(var(--paper) 80%, hsla(var(--h-base),26%,94%,0));
+  overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch;
 }
-.tabs{display:flex;gap:6px;max-width:680px;margin:0 auto;padding:0 12px;overflow-x:auto;scrollbar-width:none}
-.tabs::-webkit-scrollbar{display:none}
-.tab{
-  flex:0 0 auto;appearance:none;border:1.5px solid var(--line);border-bottom:none;
-  background:var(--peak);color:var(--ink-soft);
-  font-family:inherit;font-size:15.5px;font-weight:700;letter-spacing:.03em;
-  padding:8px 14px 7px;border-radius:10px 10px 0 0;cursor:pointer;white-space:nowrap;
-  line-height:1.3;text-align:center;
-  transition:background .15s,color .15s;
+.tabs::-webkit-scrollbar{display:none;}
+.tab-btn{
+  flex:0 0 auto;min-width:4.7rem;
+  font-family:var(--font-body);font-weight:700;font-size:.85rem;
+  padding:.6rem .5rem;border-radius:11px;border:1px solid var(--line);
+  background:var(--panel);color:var(--ink-2);cursor:pointer;
+  text-align:center;line-height:1.15;
+  transition:transform .12s, background .15s, color .15s, border-color .15s;
+  -webkit-tap-highlight-color:transparent;
 }
-.tab small{display:block;font-size:13px;font-weight:500;letter-spacing:.04em}
-.tab[aria-selected="true"]{background:var(--ink);border-color:var(--ink);color:var(--paper)}
-.tab[aria-selected="true"] small{color:#C9D2C2}
-.tab:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.tab-btn small{display:block;font-size:.62rem;font-weight:500;opacity:.75;letter-spacing:.02em;margin-top:.1rem;white-space:nowrap;}
+.tab-btn:active{transform:scale(.96);}
+.tab-btn:focus-visible{outline:3px solid var(--brand);outline-offset:2px;}
+.tab-btn.active{color:#fff;border-color:transparent;box-shadow:0 4px 12px hsla(var(--h-base),30%,25%,.20);}
+.tab-btn.active.t0{background:hsl(var(--h-pack),52%,36%);}
+.tab-btn.active.t1{background:hsl(var(--h-d1),46%,36%);}
+.tab-btn.active.t2{background:hsl(var(--h-d2),52%,42%);}
+.tab-btn.active.t3{background:hsl(var(--h-d3),46%,32%);}
+.tab-btn.active.t4{background:hsl(var(--h-d4),42%,30%);}
+.tab-btn.active.t5{background:hsl(var(--h-d5),36%,44%);}
+.tab-panel{display:none;}
+.tab-panel.is-active{display:block;animation:fade .26s ease;}
+@keyframes fade{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:none;}}
 
-/* ---------- sections ---------- */
-main{padding-top:20px}
-section[hidden]{display:none}
-h2{
-  font-family:"Kaisei Decol",serif;font-size:22px;letter-spacing:.09em;
-  margin:26px 0 12px;display:flex;align-items:center;gap:10px;
+/* スワイプ切替 */
+@keyframes slideL{from{opacity:0;transform:translateX(48px);}to{opacity:1;transform:none;}}
+@keyframes slideR{from{opacity:0;transform:translateX(-48px);}to{opacity:1;transform:none;}}
+.tab-panel.anim-l{animation:slideL .26s cubic-bezier(.22,.9,.3,1);}
+.tab-panel.anim-r{animation:slideR .26s cubic-bezier(.22,.9,.3,1);}
+.tab-panel{will-change:transform;}
+.tab-panel.dragging{animation:none;transition:none;}
+.tab-panel.spring{animation:none;transition:transform .22s cubic-bezier(.22,.9,.3,1),opacity .22s;}
+
+/* ───────── 凡例 ───────── */
+.legend{
+  display:flex;align-items:center;gap:.4rem;
+  font-size:.72rem;color:var(--ink-3);letter-spacing:.02em;
+  margin:-.35rem .15rem 1rem;
 }
-h2::after{content:"";flex:1;border-top:1px dashed var(--line)}
-h2:first-of-type{margin-top:4px}
+.legend .ic{font-size:.9rem;flex:none;}
 
+/* ───────── カード共通 ───────── */
 .card{
-  background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
-  padding:16px 16px 14px;margin-bottom:14px;
+  background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);
+  overflow:hidden;margin-bottom:1.1rem;box-shadow:0 2px 0 var(--line);
 }
-.card h3{font-size:18px;font-weight:700;letter-spacing:.03em;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
-.card .sub{font-size:15.5px;color:var(--ink-soft);margin-top:1px}
+.card-head{
+  padding:.85rem .8rem;background:var(--c-bg);border-bottom:1px dashed var(--line);
+  display:flex;align-items:center;gap:.55rem;flex-wrap:wrap;
+}
+.tag{
+  display:inline-flex;align-items:center;gap:.35rem;flex:none;
+  background:var(--c);color:#fff;font-weight:700;font-size:.76rem;
+  padding:.28rem .7rem;border-radius:999px;letter-spacing:.02em;
+}
+.tag .ic{font-size:.95rem;stroke-width:2.2;}
+.card-title{font-family:var(--font-display);font-weight:700;font-size:1.02rem;line-height:1.3;}
+.card-sub{
+  flex-basis:100%;font-size:.75rem;color:var(--ink-2);letter-spacing:.02em;
+  display:flex;align-items:center;gap:.3rem;
+}
+.card-sub .ic{font-size:.9rem;color:var(--c);}
 
-/* 定義リスト風の表 */
-.kv{margin-top:10px;border-top:1px dashed var(--line)}
-.kv div{display:flex;gap:12px;padding:9px 2px;border-bottom:1px dashed var(--line);font-size:16.5px}
-.kv dt{flex:0 0 5.5em;color:var(--ink-soft);font-weight:500}
-.kv dd{flex:1;min-width:0}
+.day1{--c:hsl(var(--h-d1),46%,36%);--c-bg:hsl(var(--h-d1),42%,94%);}
+.day2{--c:hsl(var(--h-d2),52%,42%);--c-bg:hsl(var(--h-d2),52%,94%);}
+.day3{--c:hsl(var(--h-d3),46%,32%);--c-bg:hsl(var(--h-d3),42%,94%);}
+.day4{--c:hsl(var(--h-d4),42%,30%);--c-bg:hsl(var(--h-d4),40%,94%);}
+.day5{--c:hsl(var(--h-d5),36%,44%);--c-bg:hsl(var(--h-d5),40%,95%);}
+.pack{--c:hsl(var(--h-pack),52%,36%);--c-bg:hsl(var(--h-pack),50%,93%);}
 
-/* バッジ */
+/* ───────── 山データ（登山日のカード上部） ───────── */
+.mt{padding:.75rem .8rem .85rem;border-bottom:1px dashed var(--line);}
+.mt-h{font-size:.74rem;font-weight:700;color:var(--c);letter-spacing:.06em;margin-bottom:.35rem;}
+.mt-route{font-size:.82rem;color:var(--ink-2);line-height:1.55;}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:.3rem;margin-top:.6rem;}
+.stats .s{background:var(--c-bg);border-radius:10px;padding:.5rem .2rem;text-align:center;}
+.stats .n{font-family:var(--font-display);font-weight:700;font-size:.92rem;line-height:1.25;font-variant-numeric:tabular-nums;}
+.stats .n .u{font-size:.6rem;font-weight:500;margin-left:.05rem;}
+.stats .l{font-size:.62rem;color:var(--ink-2);line-height:1.3;margin-top:.1rem;}
+
+/* ───────── タイムライン（2段＋テーブル整列） ───────── */
+.trail{position:relative;}
+.trail::before{ /* 時系列の背骨。アイコンの背景で行内は隠れ、行間だけに見える */
+  content:"";position:absolute;top:6px;bottom:6px;
+  left:calc(var(--row-pad) + var(--col-time) + var(--col-gap) + var(--col-ico)/2 - 1px);
+  width:2px;background:var(--line-soft);
+}
+.tl{
+  position:relative;
+  display:grid;
+  grid-template-columns:var(--col-time) var(--col-ico) 1fr;
+  column-gap:var(--col-gap);row-gap:1px;
+  padding:.5rem var(--row-pad);
+  border-bottom:1px dashed var(--line-soft);
+}
+.tl:last-child{border-bottom:none;}
+.t-start{
+  grid-column:1;grid-row:1;text-align:right;white-space:nowrap;
+  font-weight:700;font-size:1rem;line-height:var(--lh-main);
+  font-variant-numeric:tabular-nums;letter-spacing:.01em;
+}
+.t-dur{
+  grid-column:1;grid-row:2;text-align:right;white-space:nowrap;
+  font-size:.76rem;line-height:var(--lh-sub);color:var(--ink-3);
+  font-variant-numeric:tabular-nums;
+}
+.t-ico{
+  grid-column:2;grid-row:1;
+  display:flex;align-items:center;justify-content:center;
+  height:var(--lh-main);color:var(--c);background:var(--panel);
+}
+.t-ico .ic{width:1.15rem;height:1.15rem;stroke-width:2.05;}
+.t-sum{
+  grid-column:3;grid-row:1;
+  font-size:1rem;font-weight:500;line-height:var(--lh-main);
+}
+.t-det{
+  grid-column:3;grid-row:2;
+  font-size:.82rem;line-height:var(--lh-sub);color:var(--ink-2);
+}
+.hl{font-weight:700;color:var(--c);background:var(--c-bg);padding:.05rem .3rem;border-radius:5px;}
+.warn{font-weight:700;color:var(--alert);}
+.tl.stay{background:hsla(var(--h-base),30%,50%,.05);}
+.tl.hike{background:hsla(var(--h-base),30%,50%,.05);}
+.tl.now{background:hsla(var(--h-d3),70%,50%,.10);}
+.tl.now::after{
+  content:"今ここ";position:absolute;right:.6rem;top:.35rem;
+  font-size:.62rem;font-weight:700;color:#fff;background:var(--c);
+  padding:.1rem .45rem;border-radius:999px;letter-spacing:.04em;
+}
+
+/* ───────── ポイント欄 ───────── */
+.note{padding:.8rem .8rem .9rem;background:var(--c-bg);border-top:1px dashed var(--line);}
+.note-h{font-size:.74rem;font-weight:700;color:var(--c);letter-spacing:.06em;margin-bottom:.3rem;}
+.note ul{list-style:none;}
+.note li{font-size:.82rem;line-height:1.6;color:var(--ink-2);padding-left:.9rem;position:relative;}
+.note li+li{margin-top:.3rem;}
+.note li::before{content:"";position:absolute;left:.15rem;top:.62em;width:.32rem;height:.32rem;border-radius:50%;background:var(--c);}
+
+/* ───────── 予約の控え（定義リスト） ───────── */
+.kv-block{padding:.8rem .8rem .3rem;border-bottom:1px dashed var(--line);}
+.kv-block:last-child{border-bottom:none;padding-bottom:.85rem;}
+.kv-h{
+  font-family:var(--font-display);font-weight:700;font-size:.94rem;line-height:1.4;
+  display:flex;align-items:center;gap:.4rem;flex-wrap:wrap;
+}
+.kv-sub{font-size:.75rem;color:var(--ink-3);margin-top:.1rem;}
 .badge{
-  display:inline-block;font-size:12.5px;font-weight:700;letter-spacing:.07em;
-  padding:1px 9px 0;border-radius:999px;vertical-align:2px;white-space:nowrap;
+  display:inline-block;font-size:.62rem;font-weight:700;letter-spacing:.06em;
+  padding:.12rem .55rem;border-radius:999px;white-space:nowrap;
 }
-.badge.todo{background:var(--accent);color:#fff}
-.badge.ok{background:var(--ok);color:#fff}
-.badge.free{background:transparent;color:var(--neutral);border:1px solid var(--neutral)}
+.badge.ok{background:var(--c);color:#fff;}
+.badge.todo{background:var(--alert);color:#fff;}
+.badge.free{background:transparent;color:var(--ink-3);border:1px solid var(--line);}
+.kv{margin-top:.4rem;border-top:1px dashed var(--line-soft);}
+.kv div{display:flex;gap:.7rem;padding:.4rem .1rem;border-bottom:1px dashed var(--line-soft);font-size:.82rem;line-height:1.55;}
+.kv dt{flex:0 0 4.6em;color:var(--ink-3);font-weight:500;}
+.kv dd{flex:1;min-width:0;color:var(--ink-2);}
 
-.note{
-  font-size:15px;background:#FBEFE8;border:1px dashed var(--accent);
-  border-radius:10px;padding:10px 12px;margin-top:10px;color:#7A3B22;
+/* ───────── チェックリスト ───────── */
+.cat{
+  font-weight:700;font-size:.78rem;letter-spacing:.06em;color:var(--ink-2);
+  padding:.85rem .8rem .25rem;display:flex;align-items:center;gap:.4rem;
 }
-.note strong{color:var(--accent)}
-
-/* ---------- 概要 ---------- */
-.summary{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:8px}
-.summary .cell{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:12px 14px}
-.summary .label{font-size:12px;letter-spacing:.14em;color:var(--ink-soft)}
-.summary .value{font-family:"Kaisei Decol",serif;font-size:19px;font-weight:700;margin-top:2px;line-height:1.45}
-.summary .value small{font-family:"Zen Maru Gothic",sans-serif;font-size:16px;font-weight:500;color:var(--ink-soft);display:block}
-
-/* チェックリスト */
-.check{list-style:none;margin-top:6px}
-.check li{border-bottom:1px dashed var(--line)}
-.check label{
-  display:flex;gap:12px;align-items:flex-start;padding:13px 4px;cursor:pointer;font-size:17px;
+.cat::before{content:"";width:.38rem;height:.38rem;border-radius:50%;background:var(--c);flex:none;}
+.item{
+  display:flex;gap:.7rem;align-items:flex-start;
+  padding:.6rem .8rem;border-bottom:1px solid var(--line-soft);
+  cursor:pointer;user-select:none;-webkit-tap-highlight-color:transparent;transition:background .15s;
 }
-.check input{
-  appearance:none;flex:0 0 auto;width:23px;height:23px;margin-top:3px;cursor:pointer;
-  border:1.8px solid var(--ink);border-radius:6px;background:var(--card);position:relative;
+.item:last-child{border-bottom:none;}
+.item:active{background:var(--paper-2);}
+.box{flex:none;width:1.45rem;height:1.45rem;margin-top:.15rem;border-radius:6px;border:2px solid var(--line);position:relative;transition:background .15s,border-color .15s;}
+.item.checked .box{background:var(--c);border-color:var(--c);}
+.item.checked .box::after{
+  content:"";position:absolute;left:50%;top:47%;
+  width:.3rem;height:.56rem;border:solid #fff;border-width:0 .16rem .16rem 0;
+  transform:translate(-50%,-58%) rotate(45deg);
 }
-.check input:checked{background:var(--ok);border-color:var(--ok)}
-.check input:checked::after{
-  content:"";position:absolute;left:7px;top:3px;width:5px;height:11px;
-  border:solid #fff;border-width:0 2.5px 2.5px 0;transform:rotate(45deg);
+.item .txt{font-size:.92rem;font-weight:500;line-height:1.5;}
+.item .txt small{display:block;font-size:.76rem;font-weight:400;color:var(--ink-3);line-height:1.55;margin-top:.05rem;}
+.item.checked .txt{text-decoration:line-through;color:var(--ink-3);}
+.item.checked .txt small{color:var(--ink-3);}
+.counter{
+  margin-left:auto;font-size:.74rem;font-weight:700;color:var(--c);
+  background:var(--panel);border:1px solid var(--line);border-radius:999px;padding:.1rem .6rem;
+  font-variant-numeric:tabular-nums;
 }
-.check input:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
-.check .t{flex:1}
-.check .t b{font-weight:700}
-.check .t small{display:block;font-size:15.5px;color:var(--ink-soft);line-height:1.65}
-.check input:checked ~ .t{color:var(--neutral);text-decoration:line-through;text-decoration-color:var(--neutral)}
-.progress{font-size:14.5px;color:var(--ink-soft);text-align:right;margin-top:6px}
 
-/* ---------- 登山カード（各日に埋め込み） ---------- */
-.mt-card{border-left:4px solid var(--ok)}
-.mt-head{display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap}
-.mt-head .no{font-family:"Kaisei Decol",serif;font-size:14px;letter-spacing:.18em;color:var(--accent)}
-.mt-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-top:12px}
-.mt-stats .s{background:var(--peak);border-radius:10px;padding:10px 4px;text-align:center}
-.mt-stats .n{font-family:"Kaisei Decol",serif;font-size:18px;font-weight:700;line-height:1.2}
-.mt-stats .l{font-size:14.5px;color:var(--ink-soft);letter-spacing:.03em}
-
-/* ---------- 日程 ---------- */
-.day-title{
-  font-family:"Kaisei Decol",serif;font-size:21.5px;font-weight:700;letter-spacing:.05em;margin:2px 0 2px;
+/* ───────── メモ ───────── */
+.memo{padding:.85rem .8rem 1rem;}
+.memo textarea{
+  width:100%;min-height:6.5rem;resize:vertical;
+  font-family:var(--font-body);font-size:.88rem;line-height:1.7;color:var(--ink);
+  background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:.7rem .8rem;
 }
-.day-sub{font-size:16.5px;color:var(--ink-soft);margin-bottom:14px}
+.memo textarea:focus{outline:2px solid var(--c);outline-offset:1px;}
+.memo p{font-size:.72rem;color:var(--ink-3);margin-top:.4rem;}
 
-.timeline{list-style:none;position:relative;padding-left:2px;margin-bottom:6px}
-.tl{display:flex;gap:14px;padding:11px 0;border-bottom:1px dashed var(--line)}
-.tl-time{flex:0 0 50px;text-align:right}
-.tl-time .t-main{
-  display:block;font-family:"Kaisei Decol",serif;font-weight:700;font-size:17.5px;
-  line-height:26px;font-variant-numeric:tabular-nums;
+.foot{text-align:center;font-size:.7rem;color:var(--ink-3);padding:.6rem 0 1rem;letter-spacing:.04em;}
+
+/* ───────── レスポンシブ ───────── */
+@media (max-width:400px){
+  :root{--fs-base:18.5px;--col-time:3.3rem;--row-pad:.6rem;}
 }
-.tl-time .t-sub{display:block;font-family:"Zen Maru Gothic",sans-serif;font-weight:400;font-size:15.5px;color:var(--ink-soft);line-height:23px;margin-top:3px}
-.tl-content{flex:1;min-width:0}
-.tl-main{font-size:17px;line-height:26px}
-.tl-main .ico{
-  display:inline-flex;align-items:center;justify-content:center;
-  vertical-align:middle;margin-right:7px;color:var(--ink);
-}
-.tl-main .ico .ic{width:20px;height:20px;stroke-width:1.7}
-.tl-detail{font-size:15.5px;color:var(--ink-soft);line-height:23px;margin-top:3px}
-.tl.hike .ico{color:var(--ok)}
-.tl .warn{color:var(--accent);font-weight:700}
-
-/* アイコン共通 */
-.ic{width:15px;height:15px;flex:0 0 auto;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
-
-/* 生活・行動アイコン列で使用 */
-
-/* 前後の日へ */
-.day-nav{display:flex;justify-content:space-between;gap:10px;margin-top:18px}
-.day-nav button{
-  appearance:none;border:1.5px solid var(--ink);background:var(--card);color:var(--ink);
-  font-family:inherit;font-weight:700;font-size:15px;border-radius:999px;
-  padding:9px 19px;cursor:pointer;
-}
-.day-nav button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
-.day-nav .spacer{flex:1}
-
-/* ---------- footer ---------- */
-footer{margin-top:44px;text-align:center;color:var(--ink-soft);font-size:13px;letter-spacing:.1em}
-footer .mark{font-family:"Kaisei Decol",serif;font-size:15px;margin-bottom:2px}
-
-@media (min-width:560px){
-  body{font-size:18px}
-  .summary{grid-template-columns:repeat(4,1fr)}
-}
-/* スワイプ切替時のアニメーション */
-@keyframes slideL{from{opacity:0;transform:translateX(48px)}to{opacity:1;transform:none}}
-@keyframes slideR{from{opacity:0;transform:translateX(-48px)}to{opacity:1;transform:none}}
-section.anim-l{animation:slideL .26s cubic-bezier(.22,.9,.3,1)}
-section.anim-r{animation:slideR .26s cubic-bezier(.22,.9,.3,1)}
-
-/* 指に追従するドラッグ／キャンセル時のスプリングバック */
-main section{will-change:transform}
-section.dragging{transition:none}
-section.spring{transition:transform .22s cubic-bezier(.22,.9,.3,1),opacity .22s}
-
 @media (prefers-reduced-motion:reduce){
-  html{scroll-behavior:auto}
-  *{transition:none!important;animation:none!important}
+  .tab-panel.is-active{animation:none;}
+  *{transition:none !important;animation:none !important;}
 }
 @media print{
-  nav{position:static}
-  section[hidden]{display:block!important}
-  .tabs,.day-nav{display:none}
+  .tabs{display:none;}
+  .tab-panel{display:block !important;}
+}
+
+/* ───────── ダークモード（不要ならこのブロックごと削除） ───────── */
+@media (prefers-color-scheme:dark){
+  :root{
+    --paper:     hsl(var(--h-base), 12%, 11%);
+    --paper-2:   hsl(var(--h-base), 12%, 17%);
+    --panel:     hsl(var(--h-base), 11%, 15%);
+    --ink:       hsl(var(--h-base), 18%, 93%);
+    --ink-2:     hsl(var(--h-base), 10%, 74%);
+    --ink-3:     hsl(var(--h-base),  8%, 58%);
+    --line:      hsl(var(--h-base), 10%, 27%);
+    --line-soft: hsl(var(--h-base), 10%, 22%);
+    --brand:     hsl(var(--h-brand),50%,66%);
+    --brand-bg:  hsl(var(--h-brand),30%,20%);
+    --alert:     hsl(14, 70%, 64%);
+  }
+  body{background-image:radial-gradient(hsla(var(--h-base),20%,70%,.07) 1.1px, transparent 1.1px);}
+  .day1{--c:hsl(var(--h-d1),52%,64%);--c-bg:hsl(var(--h-d1),26%,19%);}
+  .day2{--c:hsl(var(--h-d2),58%,64%);--c-bg:hsl(var(--h-d2),28%,19%);}
+  .day3{--c:hsl(var(--h-d3),48%,60%);--c-bg:hsl(var(--h-d3),26%,18%);}
+  .day4{--c:hsl(var(--h-d4),44%,60%);--c-bg:hsl(var(--h-d4),24%,18%);}
+  .day5{--c:hsl(var(--h-d5),46%,70%);--c-bg:hsl(var(--h-d5),26%,20%);}
+  .pack{--c:hsl(var(--h-pack),55%,60%);--c-bg:hsl(var(--h-pack),26%,18%);}
+  .tab-btn.active{color:hsl(var(--h-base),15%,10%);}
+  .tl.now::after,.tag,.badge.ok,.badge.todo{color:hsl(var(--h-base),15%,10%);}
 }
 </style>
 </head>
 <body>
 
-<header class="wrap">
-  <span class="eyebrow">旅のしおり</span>
-  <h1>名古屋・奈良　百名山二座の旅</h1>
-  <p class="dates">2026.9.19 SAT — 9.23 WED</p>
-  <p class="party">大人2名・子ども1名 ／ 新潟発</p>
-  <svg class="ridge" viewBox="0 0 560 96" role="img" aria-label="大台ヶ原1,695mと八経ヶ岳1,915mの稜線">
-    <path d="M8,84 L90,68 L150,74 L215,34 L268,58 L330,66 L398,16 L452,52 L508,60 L552,70"/>
-    <circle cx="215" cy="34" r="3.5"/>
-    <circle cx="398" cy="16" r="3.5"/>
-    <text x="215" y="24" text-anchor="middle">大台ヶ原 1,695m</text>
-    <text x="398" y="7" text-anchor="middle">八経ヶ岳 1,915m</text>
-    <text x="14" y="94">9/19 名古屋</text>
-    <text x="500" y="94">9/23 大阪発</text>
-  </svg>
-</header>
+<!-- アイコン定義 -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-train" viewBox="0 0 24 24"><rect x="5" y="3" width="14" height="14" rx="4"/><line x1="5" y1="11" x2="19" y2="11"/><circle cx="9" cy="20" r="1.3"/><circle cx="15" cy="20" r="1.3"/><line x1="7" y1="17" x2="5" y2="21"/><line x1="17" y1="17" x2="19" y2="21"/></symbol>
+  <symbol id="i-bus" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="12" rx="2.5"/><line x1="3" y1="11" x2="21" y2="11"/><circle cx="7" cy="19" r="1.3"/><circle cx="17" cy="19" r="1.3"/></symbol>
+  <symbol id="i-taxi" viewBox="0 0 24 24"><path d="M3 13 L5.2 8 H18.8 L21 13"/><rect x="2.5" y="13" width="19" height="5" rx="1.5"/><circle cx="7" cy="18.6" r="1.3"/><circle cx="17" cy="18.6" r="1.3"/><rect x="9.5" y="3.5" width="5" height="2.6" rx="1"/></symbol>
+  <symbol id="i-car" viewBox="0 0 24 24"><path d="M4 16.5V12a1 1 0 0 1 .8-1l1.5-3.6A2 2 0 0 1 8.1 6h7.8a2 2 0 0 1 1.8 1.4L19.2 11a1 1 0 0 1 .8 1v4.5"/><path d="M3.5 16.5h17"/><path d="M6.3 11h11.4"/><circle cx="7.5" cy="18" r="1.4"/><circle cx="16.5" cy="18" r="1.4"/></symbol>
+  <symbol id="i-plane" viewBox="0 0 24 24"><path d="M10.8 3.2v6.6L3 13.4v1.9l7.8-2.5v4.9l-2.3 1.7v1.6l3.4-1 .1-.1.1.1 3.4 1v-1.6l-2.3-1.7v-4.9l7.8 2.5v-1.9l-7.8-3.6V3.2a1.6 1.6 0 0 0-3.2 0z"/></symbol>
+  <symbol id="i-airport" viewBox="0 0 24 24"><path d="M3 7.5h18v11a1.8 1.8 0 0 1-1.8 1.8H4.8A1.8 1.8 0 0 1 3 18.5z"/><path d="M9 7.5V5.3a1.3 1.3 0 0 1 1.3-1.3h3.4A1.3 1.3 0 0 1 16 5.3V7.5"/><path d="M3 12.5h18"/></symbol>
+  <symbol id="i-walk" viewBox="0 0 24 24"><circle cx="13" cy="4.4" r="1.9"/><path d="M13 8 L10 12 L10 16 L8 21"/><path d="M10 12 L14.5 14 L16 21"/><path d="M13 9.4 L17 11"/></symbol>
+  <symbol id="i-swap" viewBox="0 0 24 24"><path d="M4 8h13l-3-3"/><path d="M20 16H7l3 3"/></symbol>
+  <symbol id="i-mtn" viewBox="0 0 24 24"><path d="M2 20 L9 7 L13 13 L16 9 L22 20 Z"/><path d="M7 11 L9 7 L11 11"/></symbol>
+  <symbol id="i-flag" viewBox="0 0 24 24"><line x1="6" y1="3" x2="6" y2="21"/><path d="M6 4 L18 7 L6 11 Z"/></symbol>
+  <symbol id="i-lodge" viewBox="0 0 24 24"><path d="M4 11 L12 4 L20 11"/><path d="M6 11 V20 H18 V11"/><rect x="10.4" y="14.5" width="3.2" height="5.5"/></symbol>
+  <symbol id="i-bath" viewBox="0 0 24 24"><path d="M4 21 H20"/><path d="M4.5 13 H19.5 a7.5 7.5 0 0 1-15 0 Z"/><path d="M9 9.5 q-1.2-1.8 0-3.6"/><path d="M12 9.5 q-1.2-1.8 0-3.6"/><path d="M15 9.5 q-1.2-1.8 0-3.6"/></symbol>
+  <symbol id="i-fork" viewBox="0 0 24 24"><path d="M7 3 V9 a2 2 0 0 0 4 0 V3"/><line x1="9" y1="9" x2="9" y2="21"/><path d="M17 3 c-2 0-3 2-3 5 s1 4 3 4 V21"/></symbol>
+  <symbol id="i-sun" viewBox="0 0 24 24"><path d="M8 12a4 4 0 0 1 8 0"/><path d="M12 4.2v2.2M5.8 8.6l1.6 1.6M18.2 8.6l-1.6 1.6M2.5 15h19M4 18.2h16"/></symbol>
+  <symbol id="i-moon" viewBox="0 0 24 24"><path d="M16.5 3.2 A9 9 0 1 0 21 14.5 A7 7 0 0 1 16.5 3.2 Z"/></symbol>
+  <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 6.6 V12 L15.6 14.2"/></symbol>
+  <symbol id="i-bag" viewBox="0 0 24 24"><path d="M6 8 H18 L17 20 H7 Z"/><path d="M9 8 a3 3 0 0 1 6 0"/></symbol>
+  <symbol id="i-shop" viewBox="0 0 24 24"><path d="M6.5 8.2h11l1 12.3H5.5z"/><path d="M9 8.2v-1a3 3 0 0 1 6 0v1"/></symbol>
+  <symbol id="i-eye" viewBox="0 0 24 24"><path d="M2.5 12 S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12 Z"/><circle cx="12" cy="12" r="2.8"/></symbol>
+  <symbol id="i-camera" viewBox="0 0 24 24"><rect x="3" y="7.2" width="18" height="12" rx="2"/><path d="M8.3 7.2 9.7 4.7h4.6l1.4 2.5"/><circle cx="12" cy="13.2" r="3.2"/></symbol>
+  <symbol id="i-home" viewBox="0 0 24 24"><path d="M4 11.3 12 4l8 7.3"/><path d="M6 10.2V20h5v-5.2h2V20h5V10.2"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M8 12.5 L11 15.5 L16.5 9"/></symbol>
+  <symbol id="i-warn" viewBox="0 0 24 24"><path d="M12 3.5 L22 20.5 H2 Z"/><line x1="12" y1="10" x2="12" y2="14.5"/><circle cx="12" cy="17.5" r=".55" fill="currentColor" stroke="none"/></symbol>
+  <symbol id="i-note" viewBox="0 0 24 24"><path d="M6 3 h9 l4 4 v14 H6 Z"/><path d="M15 3 v4 h4"/><line x1="9" y1="12" x2="16" y2="12"/><line x1="9" y1="16" x2="14" y2="16"/></symbol>
+  <symbol id="i-gear" viewBox="0 0 24 24"><path d="M8 8.2V6.6a4 4 0 0 1 8 0v1.6"/><path d="M6.5 9.2h11a1.6 1.6 0 0 1 1.6 1.6v9a1.6 1.6 0 0 1-1.6 1.6h-11a1.6 1.6 0 0 1-1.6-1.6v-9a1.6 1.6 0 0 1 1.6-1.6z"/><path d="M9.5 13h5M9.5 16.4h5"/></symbol>
+</svg>
 
-<nav>
-  <div class="tabs" role="tablist" aria-label="しおりの目次">
-    <button class="tab" role="tab" aria-selected="true"  data-tab="overview">概要<small>手配・予約</small></button>
-    <button class="tab" role="tab" aria-selected="false" data-tab="d1">9/19 土<small>名古屋へ</small></button>
-    <button class="tab" role="tab" aria-selected="false" data-tab="d2">9/20 日<small>奈良へ</small></button>
-    <button class="tab" role="tab" aria-selected="false" data-tab="d3">9/21 月祝<small>大台ヶ原</small></button>
-    <button class="tab" role="tab" aria-selected="false" data-tab="d4">9/22 火祝<small>八経ヶ岳</small></button>
-    <button class="tab" role="tab" aria-selected="false" data-tab="d5">9/23 水祝<small>帰路</small></button>
-  </div>
-</nav>
+<div class="wrap">
 
-<main class="wrap">
-
-<!-- ================= 概要・手配・予約 ================= -->
-<section id="overview" role="tabpanel">
-  <h2>旅のかたち</h2>
-  <div class="summary">
-    <div class="cell"><div class="label">日程</div><div class="value">4泊5日<small>9/19（土）〜 9/23（水・祝）</small></div></div>
-    <div class="cell"><div class="label">拠点</div><div class="value">大和八木<small>CANDEO HOTELS 奈良橿原（3泊）</small></div></div>
-    <div class="cell"><div class="label">百名山</div><div class="value">2座<small>大台ヶ原・八経ヶ岳</small></div></div>
-    <div class="cell"><div class="label">行き / 帰り</div><div class="value">空路<small>新潟⇄中部・伊丹</small></div></div>
-  </div>
-
-  <h2>出発前のやること</h2>
-  <div class="card">
-    <ul class="check" id="todoList">
-      <li><label><input type="checkbox" data-key="bus-sorakaze"><span class="t"><b>「そらかぜ号」往復予約（9/21 大台ヶ原線）</b><small>奈良交通・完全予約制。往路 08:16 大和八木駅南口発／復路 16:00 大台ヶ原発。<span style="color:var(--accent)">未予約・最優先</span></small></span></label></li>
-      <li><label><input type="checkbox" data-key="taxi"><span class="t"><b>天川村タクシー往復予約（9/22 八経ヶ岳）</b><small>千石タクシー等へ電話。天川川合 09:20頃 → 行者還トンネル西口、お迎え 17:00〜17:15。<span style="color:var(--accent)">事前予約が絶対必須</span></small></span></label></li>
-      <li><label><input type="checkbox" data-key="hotel-nagoya"><span class="t"><b>名古屋の前乗りホテル手配（9/19 泊）</b><small>名古屋駅周辺・1泊。翌朝は徒歩で名古屋駅へ向かえる立地が◎</small></span></label></li>
-      <li><label><input type="checkbox" data-key="kintetsu"><span class="t"><b>近鉄特急券の予約確認（9/20 名古屋→大和八木）</b><small>18:30 近鉄名古屋発。3名分の特急券</small></span></label></li>
-      <li><label><input type="checkbox" data-key="nagoya-plan"><span class="t"><b>名古屋観光の中身を決める（9/19・9/20）</b><small>9/20 は実家家族と合流。プラネタリウム（名古屋市科学館）案あり</small></span></label></li>
-      <li><label><input type="checkbox" data-key="yamap"><span class="t"><b>YAMAP 地図を2座ぶんダウンロード</b><small>八経ヶ岳は電波不通エリア。オフライン地図必須</small></span></label></li>
-    </ul>
-    <p class="progress" id="todoProgress"></p>
-  </div>
-
-  <div class="note"><strong>この旅のかなめ：</strong>9/21 のバスと 9/22 のタクシーはどちらも予約がないと登山口に立てません。しおりを閉じる前に、上の2つだけは先に片づけましょう。</div>
-
-  <h2>宿泊</h2>
-  <div class="card">
-    <h3>CANDEO HOTELS 奈良橿原 <span class="badge ok">予約済</span></h3>
-    <p class="sub">築8年・館内コインランドリー有・大和八木駅至近</p>
-    <dl class="kv">
-      <div><dt>期間</dt><dd>9/20（日）21:00 IN → 9/23（水）OUT（3泊）</dd></div>
-      <div><dt>部屋</dt><dd>キングルーム（こあがりソファ有）</dd></div>
-      <div><dt>条件</dt><dd>大人2名・子ども1名／3日間とも朝食付</dd></div>
-      <div><dt>決済</dt><dd>109,980円（税込）／現地決済</dd></div>
-    </dl>
-  </div>
-  <div class="card">
-    <h3>名古屋市内ホテル（前乗り） <span class="badge todo">未手配</span></h3>
-    <dl class="kv">
-      <div><dt>期間</dt><dd>9/19（土）IN → 9/20（日）OUT（1泊）</dd></div>
-      <div><dt>メモ</dt><dd>翌朝 10:00 頃にホテル→名古屋駅へ徒歩移動の予定。駅近が便利</dd></div>
-    </dl>
-  </div>
-
-  <h2>航空券</h2>
-  <div class="card">
-    <h3>往路　9/19（土） <span class="badge ok">決済済</span></h3>
-    <dl class="kv">
-      <div><dt>便名</dt><dd>トキエア BV-401</dd></div>
-      <div><dt>区間</dt><dd>新潟 08:35 → 中部国際 09:55</dd></div>
-      <div><dt>座席</dt><dd>3A・3B・3D</dd></div>
-      <div><dt>決済</dt><dd>47,900円</dd></div>
-    </dl>
-  </div>
-  <div class="card">
-    <h3>復路　9/23（水・祝） <span class="badge ok">決済済</span></h3>
-    <dl class="kv">
-      <div><dt>便名</dt><dd>ANA NH3173（IBEX運航）</dd></div>
-      <div><dt>区間</dt><dd>大阪（伊丹）14:20 → 新潟 15:20</dd></div>
-      <div><dt>座席</dt><dd>7A・7B・8B</dd></div>
-      <div><dt>決済</dt><dd>119,732円（税込）</dd></div>
-    </dl>
-  </div>
-
-  <h2>バス（奈良交通）</h2>
-  <div class="card">
-    <h3>大台ヶ原線「そらかぜ号」 <span class="badge todo">未予約・要事前予約</span></h3>
-    <p class="sub">9/21（月・祝）／完全予約制</p>
-    <dl class="kv">
-      <div><dt>往路</dt><dd>08:16 大和八木駅南口 → 11:16 大台ヶ原</dd></div>
-      <div><dt>復路</dt><dd>16:00 大台ヶ原 → 19:10 大和八木駅南口</dd></div>
-    </dl>
-    <div class="note"><strong>往復ともに事前予約が必要です。</strong></div>
-  </div>
-  <div class="card">
-    <h3>八経ヶ岳アクセス（往路） <span class="badge free">予約不要</span></h3>
-    <p class="sub">9/22（火・祝）／路線バス</p>
-    <dl class="kv">
-      <div><dt>52系統</dt><dd>07:17 大和八木駅南口 → 08:10 下市口駅</dd></div>
-      <div><dt>急行2系統</dt><dd>08:20 下市口駅 → 09:02 天川川合（洞川温泉行）</dd></div>
-    </dl>
-  </div>
-  <div class="card">
-    <h3>八経ヶ岳アクセス（復路） <span class="badge free">予約不要</span></h3>
-    <p class="sub">9/22（火・祝）／路線バス</p>
-    <dl class="kv">
-      <div><dt>2系統</dt><dd>18:12 天川川合 → 19:09 下市口駅（大淀バスセンター行）</dd></div>
-    </dl>
-  </div>
-
-  <h2>タクシー（9/22 八経ヶ岳）</h2>
-  <div class="card">
-    <h3>天川川合 ⇄ 行者還トンネル西口 <span class="badge todo">未予約・絶対必須</span></h3>
-    <p class="sub">片道約30分／天川村周辺のタクシー会社（千石タクシー等）</p>
-    <div class="note">
-      <strong>事前に往復の予約を。</strong>帰りのバス（天川川合 18:12 発）に間に合うよう、
-      行きの乗車時に帰りの<strong>お迎え時間（17:15頃）</strong>を運転手さんと確定させておくのが鉄則です。
+  <!-- ══════════ 表紙 ══════════
+       画像ができたら、下の <div class="cover-ph">…</div> を丸ごと
+       <img alt="表紙" src="data:image/jpeg;base64,＜ここに貼り付け＞"> に差し替えてください。
+       枠・角丸はそのまま効きます。色は CSS 冒頭①の色相を変えるだけで全体が追従します。 -->
+  <div class="cover">
+    <div class="cover-frame">
+      <div class="cover-ph">
+        <svg class="ridge" viewBox="0 0 560 96" role="img" aria-label="大台ヶ原1,695mと八経ヶ岳1,915mの稜線">
+          <path d="M8,86 L52,78 L92,54 L150,76 L215,34 L268,58 L330,66 L398,16 L452,52 L508,60 L552,70"/>
+          <circle cx="92" cy="54" r="3.5"/>
+          <circle cx="215" cy="34" r="3.5"/>
+          <circle cx="398" cy="16" r="3.5"/>
+          <text x="92" y="44" text-anchor="middle">伊吹山 1,377m</text>
+          <text x="215" y="24" text-anchor="middle">大台ヶ原 1,695m</text>
+          <text x="398" y="7" text-anchor="middle">八経ヶ岳 1,915m</text>
+          <text x="14" y="94">9/19 新潟発</text>
+          <text x="500" y="94">9/23 大阪発</text>
+        </svg>
+        表紙画像はここに差し替え（4:3 推奨）
+      </div>
+    </div>
+    <div class="cover-cap">
+      <h1>名古屋・奈良　百名山三座の旅</h1>
+      <div class="date">2026.9.19 SAT — 9.23 WED</div>
+      <div class="party">大人2名・子ども1名 ／ 新潟発</div>
+      <div class="count" id="countdown"></div>
     </div>
   </div>
-</section>
 
-<!-- ================= 9/19 ================= -->
-<section id="d1" role="tabpanel" hidden>
-  <p class="day-title">9/19（土）新潟 → 名古屋</p>
-  <p class="day-sub">フライト＆前乗り</p>
-  <ul class="timeline">
-    <li class="tl"><div class="tl-time"><span class="t-main">6:30</span><span class="t-sub">50</span></div><div class="tl-content"><div class="tl-main"><span class="ico" role="img" aria-label="起床"><svg class="ic" viewBox="0 0 24 24"><title>起床</title><path d="M8 12a4 4 0 0 1 8 0"/><path d="M12 4.2v2.2M5.8 8.6l1.6 1.6M18.2 8.6l-1.6 1.6M2.5 15h19M4 18.2h16"/></svg></span>起床、準備</div></div></li>
-    <li class="tl move"><div class="tl-time"><span class="t-main">7:20</span><span class="t-sub">15</span></div><div class="tl-content"><div class="tl-main"><span class="ico" role="img" aria-label="車"><svg class="ic" viewBox="0 0 24 24"><title>車</title><path d="M4 16.5V12a1 1 0 0 1 .8-1l1.5-3.6A2 2 0 0 1 8.1 6h7.8a2 2 0 0 1 1.8 1.4L19.2 11a1 1 0 0 1 .8 1v4.5"/><path d="M3.5 16.5h17"/><path d="M6.3 11h11.4"/><circle cx="7.5" cy="18" r="1.4"/><circle cx="16.5" cy="18" r="1.4"/></svg></span>自宅 → 新潟空港</div></div></li>
-    <li class="tl"><div class="tl-time"><span class="t-main">7:35</span><span class="t-sub">1:00</span></div><div class="tl-content"><div class="tl-main"><span class="ico" role="img" aria-label="空港"><svg class="ic" viewBox="0 0 24 24"><title>空港</title><path d="M3 7.5h18v11a1.8 1.8 0 0 1-1.8 1.8H4.8A1.8 1.8 0 0 1 3 18.5z"/><path d="M9 7.5V5.3a1.3 1.3 0 0 1 1.3-1.3h3.4A1.3 1.3 0 0 1 16 5.3V7.5"/><path d="M3 12.5h18"/></svg></span>新潟空港チェックイン・搭乗待機</div><div class="tl-detail"><span>出発30分前に手続き終了</span></div></div></li>
-    <li class="tl move"><div class="tl-time"><span class="t-main">8:35</span><span class="t-sub">1:20</span></div><div class="tl-content"><div class="tl-main"><span class="ico" role="img" aria-label="空路"><svg class="ic" viewBox="0 0 24 24"><title>空路</title><path d="M10.8 3.2v6.6L3 13.4v1.9l7.8-2.5v4.9l-2.3 1.7v1.6l3.4-1 .1-.1.1.1 3.4 1v-1.6l-2.3-1.7v-4.9l7.8 2.5v-1.9l-7.8-3.6V3.2a1.6 1.6 0 0 0-3.2 0z"/></svg></span>新潟 → 中部国際</div><div class="tl-detail"><span>トキエア BV-401便／座席 3A・3B・3D</span></div></div></li>
-    <li class="tl"><div class="tl-time"><span class="t-main">9:55</span><span class="t-sub">9:00</span></div><div class="tl-content"><div class="tl-main"><span class="ico" role="img" aria-label="観光"><svg class="ic" viewBox="0 0 24 24"><title>観光</title><rect x="3" y="7.2" width="18" height="12" rx="2"/><path d="M8.3 7.2 9.7 4.7h4.6l1.4 2.5"/><circle cx="12" cy="13.2" r="3.2"/></svg></span>名古屋観光</div><div class="tl-detail"><span class="warn">内容未定 — 要プランニング</span></div></div></li>
-    <li class="tl"><div class="tl-time"><span class="t-main">17:00</span><span class="t-sub">30</span></div><div class="tl-content"><div class="tl-main"><span class="ico" role="img" aria-label="ホテルチェックイン"><svg class="ic" viewBox="0 0 24 24"><title>ホテルチェックイン</title><circle cx="7.2" cy="7.2" r="3.4"/><circle cx="7.2" cy="7.2" r="1.1"/><path d="M9.6 9.6 19.5 19.5"/><path d="M14.8 14.8l2-2M17.3 17.3l2-2"/></svg></span>ホテルチェックイン</div><div class="tl-detail"><span class="warn">未予約 — 要手配</span></div></div></li>
-    <li class="tl"><div class="tl-time"><span class="t-main">17:30</span><span class="t-sub">4:00</span></div><div class="tl-content"><div class="tl-main"><span class="ico" role="img" aria-label="夕食"><svg class="ic" viewBox="0 0 24 24"><title>夕食</title><path d="M6 2v6.3M7.6 2v6.3M9.2 2v6.3M6 8.3a1.6 1.6 0 0 0 3.2 0M7.6 8.3V22"/><path d="M16.7 2c-1.7 0-3 2.5-3 5.6 0 2.5 1 4.7 2.3 5.3V22"/></svg></span>夕食、自由時間</div></div></li>
-    <li class="tl"><div class="tl-time"><span class="t-main">21:30</span></div><div class="tl-content"><div class="tl-main"><span class="ico" role="img" aria-label="就寝"><svg class="ic" viewBox="0 0 24 24"><title>就寝</title><path d="M20 14.2A8.2 8.2 0 1 1 9.8 4a6.7 6.7 0 0 0 10.2 10.2z"/></svg></span>就寝</div></div></li>
-  </ul>
-  <div class="day-nav">
-    <span class="spacer"></span>
-    <button data-go="d2">9/20 奈良へ →</button>
+  <!-- ══════════ タブ ══════════ -->
+  <div class="tabs" role="tablist">
+    <button class="tab-btn t0 active" data-tab="pack" role="tab">準備<small>手配・持ち物</small></button>
+    <button class="tab-btn t1" data-tab="day1" role="tab">9/19<small>伊吹山</small></button>
+    <button class="tab-btn t2" data-tab="day2" role="tab">9/20<small>彦根→奈良</small></button>
+    <button class="tab-btn t3" data-tab="day3" role="tab">9/21<small>大台ヶ原</small></button>
+    <button class="tab-btn t4" data-tab="day4" role="tab">9/22<small>八経ヶ岳</small></button>
+    <button class="tab-btn t5" data-tab="day5" role="tab">9/23<small>帰路</small></button>
   </div>
-</section>
 
-<!-- ================= 9/20 ================= -->
-<section id="d2" role="tabpanel" hidden>
-  <p class="day-title">9/20（日）家族観光 → 近鉄特急で奈良へ</p>
-  <p class="day-sub">実家家族と名古屋で合流</p>
-  <ul class="timeline">
-    <li class="tl"><div class="tl-time"><span class="t-main">7:30</span><span class="t-sub">30</span></div><div class="tl-content"><div class="tl-main"><span class="ico" role="img" aria-label="起床"><svg class="ic" viewBox="0 0 24 24"><title>起床</title><path d="M8 12a4 4 0 0 1 8 0"/><path d="M12 4.2v2.2M5.8 8.6l1.6 1.6M18.2 8.6l-1.6 1.6M2.5 15h19M4 18.2h16"/></svg></span>起床、準備</div></div></li>
-    <li class="tl"><div class="tl-time"><span class="t-main">8:00</span><span class="t-sub">2:00</span></div><div class="tl-content"><div class="tl-main"><span class="ico" role="img" aria-label="フリー"><svg class="ic" viewBox="0 0 24 24"><title>フリー</title><circle cx="12" cy="12" r="8.3"/><path d="M12 4.8v1.6M12 17.6v1.6M4.8 12h1.6M17.6 12h1.6"/><path d="M14.8 9.2 13 13l-3.8 1.8L11 11z"/></svg></span>午前フリー</div><div class="tl-detail"><span class="warn">未計画</span></div></div></li>
-    <li class="tl move"><div class="tl-time"><span class="t-main">10:00</span><span class="t-sub">30</span></div><div class="tl-content"><div class="tl-main"><span class="ico" role="img" aria-label="徒歩"><svg class="ic" viewBox="0 0 24 24"><title>徒歩</title><circle cx="12.5" cy="4.3" r="1.8"/><path d="M12.5 6.6v4.3l-3 2.7M12.5 10.9l3.3 2.4-.8 5.4M9.3 13.4l3.2-1.1M9 21l1.7-4.8M14.6 21l-1-4.9"/></svg></span>ホテル → 名古屋駅</div></div></li>
-    <li class="tl"><div class="tl-time"><span class="t-main">10:30</span><span class="t-sub">8:00</span></div><div class="tl-content"><div class="tl-main"><span class="ico" role="img" aria-label="観光"><svg class="ic" viewBox="0 0 24 24"><title>観光</title><rect x="3" y="7.2" width="18" height="12" rx="2"/><path d="M8.3 7.2 9.7 4.7h4.6l1.4 2.5"/><circle cx="12" cy="13.2" r="3.2"/></svg></span>実家家族と合流・観光（名古屋駅解散）</div><div class="tl-detail"><span>プラネタリウム案あり（名古屋市科学館）</span></div></div></li>
-    <li class="tl move"><div class="tl-time"><span class="t-main">18:30</span><span class="t-sub">1:50</span></div><div class="tl-content"><div class="tl-main"><span class="ico" role="img" aria-label="鉄道"><svg class="ic" viewBox="0 0 24 24"><title>鉄道</title><path d="M3.5 14.2V9.3a2 2 0 0 1 2-2h10c3 0 5 2.1 5 4.7v2.2a1 1 0 0 1-1 1h-15a1 1 0 0 1-1-1z"/><path d="M6 10.8h3.2M10.6 10.8h3.2M15.2 10.8h2.3"/><circle cx="7" cy="18.3" r="1.3"/><circle cx="17" cy="18.3" r="1.3"/></svg></span>近鉄名古屋 → 大和八木</div><div class="tl-detail"><span>特急アーバンライナー ／ <span class="warn">特急券の予約確認</span></span></div></div></li>
-    <li class="tl move"><div class="tl-time"><span class="t-main">20:20</span><span class="t-sub">5</span></div><div class="tl-content"><div class="tl-main"><span class="ico" role="img" aria-label="徒歩"><svg class="ic" viewBox="0 0 24 24"><title>徒歩</title><circle cx="12.5" cy="4.3" r="1.8"/><path d="M12.5 6.6v4.3l-3 2.7M12.5 10.9l3.3 2.4-.8 5.4M9.3 13.4l3.2-1.1M9 21l1.7-4.8M14.6 21l-1-4.9"/></svg></span>大和八木駅 → CANDEO HOTELS 奈良橿原</div><div class="tl-detail"><span>駅至近・乗換不要</span></div></div></li>
-    <li class="tl"><div class="tl-time"><span class="t-main">20:25</span><span class="t-sub">15</span></div><div class="tl-content"><div class="tl-main"><span class="ico" role="img" aria-label="ホテルチェックイン"><svg class="ic" viewBox="0 0 24 24"><title>ホテルチェックイン</title><circle cx="7.2" cy="7.2" r="3.4"/><circle cx="7.2" cy="7.2" r="1.1"/><path d="M9.6 9.6 19.5 19.5"/><path d="M14.8 14.8l2-2M17.3 17.3l2-2"/></svg></span>ホテルチェックイン（予約済）</div></div></li>
-    <li class="tl"><div class="tl-time"><span class="t-main">20:40</span><span class="t-sub">1:00</span></div><div class="tl-content"><div class="tl-main"><span class="ico" role="img" aria-label="最上階スカイスパ"><svg class="ic" viewBox="0 0 24 24"><title>最上階スカイスパ</title><path d="M4 18.5a8 8 0 0 1 16 0"/><path d="M7.5 12.3c-1.2 1.2-1.2 2.5 0 3.7M12 10c-1.2 1.2-1.2 3 0 4.2M16.5 12.3c-1.2 1.2-1.2 2.5 0 3.7"/></svg></span>最上階スカイスパ（露天風呂）</div></div></li>
-    <li class="tl"><div class="tl-time"><span class="t-main">21:40</span></div><div class="tl-content"><div class="tl-main"><span class="ico" role="img" aria-label="就寝"><svg class="ic" viewBox="0 0 24 24"><title>就寝</title><path d="M20 14.2A8.2 8.2 0 1 1 9.8 4a6.7 6.7 0 0 0 10.2 10.2z"/></svg></span>就寝</div></div></li>
-  </ul>
-  <div class="day-nav">
-    <button data-go="d1">← 9/19 名古屋へ</button>
-    <button data-go="d3">9/21 大台ヶ原 →</button>
+  <div class="legend">
+    <svg class="ic"><use href="#i-clock"/></svg>
+    <span>左の列は 上段＝開始時刻／下段＝所要時間（時:分）</span>
   </div>
-</section>
 
-<!-- ================= 9/21 ================= -->
-<section id="d3" role="tabpanel" hidden>
-  <p class="day-title">9/21（月・祝）大台ヶ原</p>
-  <p class="day-sub">百名山 一座目・東大台コース</p>
+  <!-- ══════════ 準備タブ ══════════ -->
+  <div class="tab-panel is-active" id="pack">
 
-  <div class="card mt-card">
-    <div class="mt-head">
-      <span class="no">百名山　一座目</span>
-      <h3 style="width:100%">大台ヶ原（東大台コース）</h3>
+    <div class="card pack">
+      <div class="card-head">
+        <span class="tag"><svg class="ic"><use href="#i-check"/></svg>出発前のやること</span>
+        <div class="card-title">手配チェック</div>
+        <span class="counter"></span>
+      </div>
+      <div class="item"><span class="box"></span><span class="txt">天川村タクシー往復予約（9/22 八経ヶ岳）<small>千石タクシー等へ電話。天川川合 09:20頃 → 行者還トンネル西口、お迎え 17:00〜17:15。<span class="warn">事前予約が絶対必須</span></small></span></div>
+      <div class="item"><span class="box"></span><span class="txt">関ケ原駅からのタクシー手配（9/19 11:55 → 伊吹山9合目）<small>片道約45分。当日その場で拾える前提にしない。<span class="warn">事前手配</span></small></span></div>
+      <div class="item"><span class="box"></span><span class="txt">伊吹山登山バス 復路の運行確認（9/19 15:20 スカイテラス伊吹山発）<small>16:40 米原駅東口着。運行日と予約要否をあわせて確認</small></span></div>
+      <div class="item"><span class="box"></span><span class="txt">ホテルサンルート彦根の予約確認（9/19 泊・ひこにゃんルーム）<small>彦根駅西口すぐ。朝食は館内「お食事処 花しょうぶ」</small></span></div>
+      <div class="item"><span class="box"></span><span class="txt">近鉄特急券の予約確認（9/20 名古屋→大和八木）<small>18:30 近鉄名古屋発。3名分の特急券</small></span></div>
+      <div class="item"><span class="box"></span><span class="txt">名古屋観光の中身を決める（9/20 10:30〜18:30）<small>実家家族と合流。プラネタリウム（名古屋市科学館）案あり</small></span></div>
+      <div class="item"><span class="box"></span><span class="txt">YAMAP 地図を3座ぶんダウンロード<small>伊吹山・大台ヶ原・八経ヶ岳。八経ヶ岳は電波不通エリアなのでオフライン地図必須</small></span></div>
+      <div class="note">
+        <div class="note-h">この旅のかなめ</div>
+        <ul>
+          <li>残る関門は 9/19 関ケ原のタクシーと 9/22 天川村のタクシー。どちらも予約がないと登山口に立てません。</li>
+          <li>そらかぜ号は往復とも予約済み。あとはこの2件を片づける。</li>
+        </ul>
+      </div>
     </div>
-    <p class="sub">日出ヶ岳 1,695m／周回して売店ハントへ（YAMAP データ連携）</p>
-    <div class="mt-stats">
-      <div class="s"><div class="n">7.2<span style="font-size:11px">km</span></div><div class="l">距離</div></div>
-      <div class="s"><div class="n">477 / 473</div><div class="l">のぼり／くだり m</div></div>
-      <div class="s"><div class="n">13</div><div class="l">コース定数（ふつう）</div></div>
-      <div class="s"><div class="n">100%</div><div class="l">ペース倍率（標準）</div></div>
+
+    <div class="card pack">
+      <div class="card-head">
+        <span class="tag"><svg class="ic"><use href="#i-note"/></svg>予約の控え</span>
+        <div class="card-title">宿・航空券・バス・タクシー</div>
+      </div>
+
+      <div class="kv-block">
+        <div class="kv-h">CANDEO HOTELS 奈良橿原 <span class="badge ok">予約済</span></div>
+        <div class="kv-sub">築8年・館内コインランドリー有・大和八木駅至近</div>
+        <dl class="kv">
+          <div><dt>期間</dt><dd>9/20（日）21:00 IN → 9/23（水）OUT（3泊）</dd></div>
+          <div><dt>部屋</dt><dd>キングルーム（こあがりソファ有）</dd></div>
+          <div><dt>条件</dt><dd>大人2名・子ども1名／3日間とも朝食付</dd></div>
+          <div><dt>決済</dt><dd>109,980円（税込）／現地決済</dd></div>
+        </dl>
+      </div>
+
+      <div class="kv-block">
+        <div class="kv-h">ホテルサンルート彦根 <span class="badge todo">要確認</span></div>
+        <div class="kv-sub">彦根駅西口すぐ／ひこにゃんルーム</div>
+        <dl class="kv">
+          <div><dt>期間</dt><dd>9/19（土）17:00 IN → 9/20（日）08:15 OUT（1泊）</dd></div>
+          <div><dt>朝食</dt><dd>館内「お食事処 花しょうぶ」7:00〜</dd></div>
+          <div><dt>メモ</dt><dd>チェックアウト後、荷物はフロント預け。彦根城まで徒歩約15分</dd></div>
+        </dl>
+      </div>
+
+      <div class="kv-block">
+        <div class="kv-h">伊吹山アクセス <span class="badge todo">未手配</span></div>
+        <div class="kv-sub">9/19（土）／9合目（スカイテラス伊吹山）発着</div>
+        <dl class="kv">
+          <div><dt>往路</dt><dd>タクシー 11:55 関ケ原駅 → 12:40 伊吹山9合目（約45分・要事前手配）</dd></div>
+          <div><dt>復路</dt><dd>伊吹山登山バス 15:20 スカイテラス伊吹山 → 16:40 米原駅東口</dd></div>
+          <div><dt>接続</dt><dd>16:45 JR琵琶湖線 米原 → 彦根（1駅・約5分）</dd></div>
+        </dl>
+      </div>
+
+      <div class="kv-block">
+        <div class="kv-h">往路 航空券　9/19（土） <span class="badge ok">決済済</span></div>
+        <dl class="kv">
+          <div><dt>便名</dt><dd>トキエア BV-401</dd></div>
+          <div><dt>区間</dt><dd>新潟 08:35 → 中部国際 09:55</dd></div>
+          <div><dt>座席</dt><dd>3A・3B・3D</dd></div>
+          <div><dt>決済</dt><dd>47,900円</dd></div>
+        </dl>
+      </div>
+
+      <div class="kv-block">
+        <div class="kv-h">復路 航空券　9/23（水・祝） <span class="badge ok">決済済</span></div>
+        <dl class="kv">
+          <div><dt>便名</dt><dd>ANA NH3173（IBEX運航）</dd></div>
+          <div><dt>区間</dt><dd>大阪（伊丹）14:20 → 新潟 15:20</dd></div>
+          <div><dt>座席</dt><dd>7A・7B・8B</dd></div>
+          <div><dt>決済</dt><dd>119,732円（税込）</dd></div>
+        </dl>
+      </div>
+
+      <div class="kv-block">
+        <div class="kv-h">大台ヶ原線「そらかぜ号」 <span class="badge ok">予約済</span></div>
+        <div class="kv-sub">9/21（月・祝）／奈良交通・完全予約制／大人2名・小児1名</div>
+        <dl class="kv">
+          <div><dt>往路</dt><dd>0001便 01号車　08:15 大和八木駅南口1 → 11:16 大台ヶ原<br>予約番号 08308012161 ／ 7,750円</dd></div>
+          <div><dt>復路</dt><dd>0101便 01号車　16:00 大台ヶ原 → 19:10 大和八木駅南口1<br>予約番号 08308012261 ／ 7,750円</dd></div>
+          <div><dt>問合せ</dt><dd>奈良交通総合予約センター 0742-22-5110（9:00〜18:00）</dd></div>
+        </dl>
+      </div>
+
+      <div class="kv-block">
+        <div class="kv-h">中部国際空港 → 関ケ原（9/19） <span class="badge free">乗り継ぎ確定</span></div>
+        <div class="kv-sub">所要 1時間38分／乗換2回</div>
+        <dl class="kv">
+          <div><dt>名鉄</dt><dd>10:17 中部国際空港 → 10:49 金山（特急・名鉄岐阜行）</dd></div>
+          <div><dt>JR</dt><dd>10:54 金山（4番ホーム）→ 11:33 大垣（新快速・大垣行）</dd></div>
+          <div><dt>JR</dt><dd>11:41 大垣（1番ホーム）→ 11:55 関ケ原（普通・米原行）</dd></div>
+        </dl>
+      </div>
+
+      <div class="kv-block">
+        <div class="kv-h">八経ヶ岳アクセス 路線バス <span class="badge free">予約不要</span></div>
+        <div class="kv-sub">9/22（火・祝）／奈良交通</div>
+        <dl class="kv">
+          <div><dt>往路</dt><dd>52系統 07:17 大和八木駅南口 → 08:10 下市口駅</dd></div>
+          <div><dt>往路</dt><dd>急行2系統 08:20 下市口駅 → 09:02 天川川合（洞川温泉行）</dd></div>
+          <div><dt>復路</dt><dd>2系統 18:12 天川川合 → 19:09 下市口駅（大淀バスセンター行）</dd></div>
+        </dl>
+      </div>
+
+      <div class="kv-block">
+        <div class="kv-h">天川川合 ⇄ 行者還トンネル西口 <span class="badge todo">未予約・絶対必須</span></div>
+        <div class="kv-sub">9/22（火・祝）／片道約30分・天川村周辺のタクシー会社（千石タクシー等）</div>
+        <dl class="kv">
+          <div><dt>要点</dt><dd>行きの乗車時に、帰りの<span class="warn">お迎え時間（17:00〜17:15）</span>を運転手さんと確定させる</dd></div>
+          <div><dt>期限</dt><dd>天川川合 18:12 発のバスに間に合わせる</dd></div>
+        </dl>
+      </div>
     </div>
-    <dl class="kv">
-      <div><dt>現地時間</dt><dd>11:16 着 〜 16:00 発（滞在 4時間44分）</dd></div>
-    </dl>
-  </div>
 
-  <ul class="timeline">
-    <li class="tl"><div class="tl-time"><span class="t-main">7:00</span><span class="t-sub">30</span></div><div class="tl-content"><div class="tl-main"><span class="ico" role="img" aria-label="起床"><svg class="ic" viewBox="0 0 24 24"><title>起床</title><path d="M8 12a4 4 0 0 1 8 0"/><path d="M12 4.2v2.2M5.8 8.6l1.6 1.6M18.2 8.6l-1.6 1.6M2.5 15h19M4 18.2h16"/></svg></span>起床、準備</div></div></li>
-    <li class="tl"><div class="tl-time"><span class="t-main">7:30</span><span class="t-sub">30</span></div><div class="tl-content"><div class="tl-main"><span class="ico" role="img" aria-label="朝食"><svg class="ic" viewBox="0 0 24 24"><title>朝食</title><path d="M6 2v6.3M7.6 2v6.3M9.2 2v6.3M6 8.3a1.6 1.6 0 0 0 3.2 0M7.6 8.3V22"/><path d="M16.7 2c-1.7 0-3 2.5-3 5.6 0 2.5 1 4.7 2.3 5.3V22"/></svg></span>朝食（ビュッフェ）</div></div></li>
-    <li class="tl move"><div class="tl-time"><span class="t-main">8:00</span><span class="t-sub">15</span></div><div class="tl-content"><div class="tl-main"><span class="ico" role="img" aria-label="徒歩"><svg class="ic" viewBox="0 0 24 24"><title>徒歩</title><circle cx="12.5" cy="4.3" r="1.8"/><path d="M12.5 6.6v4.3l-3 2.7M12.5 10.9l3.3 2.4-.8 5.4M9.3 13.4l3.2-1.1M9 21l1.7-4.8M14.6 21l-1-4.9"/></svg></span>ホテル → 大和八木駅南口バス停</div></div></li>
-    <li class="tl move"><div class="tl-time"><span class="t-main">8:16</span><span class="t-sub">3:00</span></div><div class="tl-content"><div class="tl-main"><span class="ico" role="img" aria-label="バス"><svg class="ic" viewBox="0 0 24 24"><title>バス</title><rect x="3.5" y="4.5" width="17" height="12" rx="2.2"/><path d="M3.5 10.5h17"/><rect x="5.7" y="6.3" width="4.6" height="3.1" rx="0.6"/><rect x="11.5" y="6.3" width="4.6" height="3.1" rx="0.6"/><rect x="17.3" y="6.3" width="1.6" height="3.1" rx="0.4"/><circle cx="7.3" cy="18.2" r="1.3"/><circle cx="16.7" cy="18.2" r="1.3"/></svg></span>大和八木駅 → 大台ヶ原</div><div class="tl-detail"><span>予約制「そらかぜ号」／<span class="warn">未予約・要事前予約</span></span></div></div></li>
-    <li class="tl hike"><div class="tl-time"><span class="t-main">11:16</span><span class="t-sub">4:44</span></div><div class="tl-content"><div class="tl-main"><span class="ico" role="img" aria-label="登山"><svg class="ic" viewBox="0 0 24 24"><title>登山</title><path d="M2.5 19 9 8l3 4.5L15.5 6 21.5 19z"/><path d="M13.7 8.7l1.8 2.2 1.8-2.2.8 1"/></svg></span>日出ヶ岳（1,695m）東大台コース周回 → 売店ハント</div></div></li>
-    <li class="tl move"><div class="tl-time"><span class="t-main">16:00</span><span class="t-sub">3:10</span></div><div class="tl-content"><div class="tl-main"><span class="ico" role="img" aria-label="バス"><svg class="ic" viewBox="0 0 24 24"><title>バス</title><rect x="3.5" y="4.5" width="17" height="12" rx="2.2"/><path d="M3.5 10.5h17"/><rect x="5.7" y="6.3" width="4.6" height="3.1" rx="0.6"/><rect x="11.5" y="6.3" width="4.6" height="3.1" rx="0.6"/><rect x="17.3" y="6.3" width="1.6" height="3.1" rx="0.4"/><circle cx="7.3" cy="18.2" r="1.3"/><circle cx="16.7" cy="18.2" r="1.3"/></svg></span>大台ヶ原 → 大和八木駅</div></div></li>
-    <li class="tl"><div class="tl-time"><span class="t-main">19:10</span><span class="t-sub">1:50</span></div><div class="tl-content"><div class="tl-main"><span class="ico" role="img" aria-label="夕食"><svg class="ic" viewBox="0 0 24 24"><title>夕食</title><path d="M6 2v6.3M7.6 2v6.3M9.2 2v6.3M6 8.3a1.6 1.6 0 0 0 3.2 0M7.6 8.3V22"/><path d="M16.7 2c-1.7 0-3 2.5-3 5.6 0 2.5 1 4.7 2.3 5.3V22"/></svg></span>夕食、ホテル、入浴</div></div></li>
-    <li class="tl"><div class="tl-time"><span class="t-main">21:00</span></div><div class="tl-content"><div class="tl-main"><span class="ico" role="img" aria-label="就寝"><svg class="ic" viewBox="0 0 24 24"><title>就寝</title><path d="M20 14.2A8.2 8.2 0 1 1 9.8 4a6.7 6.7 0 0 0 10.2 10.2z"/></svg></span>就寝</div><div class="tl-detail"><span>翌日の本格登山に備えて早めに</span></div></div></li>
-  </ul>
-  <div class="day-nav">
-    <button data-go="d2">← 9/20 奈良へ</button>
-    <button data-go="d4">9/22 八経ヶ岳 →</button>
-  </div>
-</section>
+    <div class="card pack">
+      <div class="card-head">
+        <span class="tag"><svg class="ic"><use href="#i-bag"/></svg>持ち物</span>
+        <div class="card-title">荷造りリスト</div>
+        <span class="counter"></span>
+      </div>
 
-<!-- ================= 9/22 ================= -->
-<section id="d4" role="tabpanel" hidden>
-  <p class="day-title">9/22（火・祝）大峰山・八経ヶ岳</p>
-  <p class="day-sub">百名山 二座目・この旅の山場</p>
+      <div class="cat">登山装備（9/19 伊吹山・9/21 大台ヶ原・9/22 八経ヶ岳）</div>
+      <div class="item"><span class="box"></span><span class="txt">ザック・ザックカバー</span></div>
+      <div class="item"><span class="box"></span><span class="txt">登山靴・替え靴下</span></div>
+      <div class="item"><span class="box"></span><span class="txt">レインウェア上下（大台ヶ原は日本有数の多雨地）</span></div>
+      <div class="item"><span class="box"></span><span class="txt">防寒着・手袋・帽子</span></div>
+      <div class="item"><span class="box"></span><span class="txt">ヘッドランプ・予備電池（9/22 は下山が遅い）</span></div>
+      <div class="item"><span class="box"></span><span class="txt">水・行動食・昼食（3日ぶん）</span></div>
+      <div class="item"><span class="box"></span><span class="txt">YAMAP オフライン地図（3座）・モバイルバッテリー</span></div>
+      <div class="item"><span class="box"></span><span class="txt">熊鈴・ホイッスル・ファーストエイド</span></div>
 
-  <div class="card mt-card">
-    <div class="mt-head">
-      <span class="no">百名山　二座目</span>
-      <h3 style="width:100%">大峰山（八経ヶ岳）</h3>
+      <div class="cat">衣類・洗面</div>
+      <div class="item"><span class="box"></span><span class="txt">着替え（4泊5日ぶん・ホテルにコインランドリー有）</span></div>
+      <div class="item"><span class="box"></span><span class="txt">街歩き用の上着</span></div>
+      <div class="item"><span class="box"></span><span class="txt">洗面用具・タオル・ウェットティッシュ</span></div>
+      <div class="item"><span class="box"></span><span class="txt">汚れ物用の袋（下山後の登山装備をまとめる）</span></div>
+
+      <div class="cat">電子機器・貴重品</div>
+      <div class="item"><span class="box"></span><span class="txt">充電器・ケーブル・カメラ</span></div>
+      <div class="item"><span class="box"></span><span class="txt">航空券・特急券・予約控え（スクショ保存）</span></div>
+      <div class="item"><span class="box"></span><span class="txt">現金（バス・タクシー・山頂売店の山バッジ用）・ICカード・保険証</span></div>
+
+      <div class="cat">その他</div>
+      <div class="item"><span class="box"></span><span class="txt">折りたたみ傘・エコバッグ</span></div>
+      <div class="item"><span class="box"></span><span class="txt">コインロッカー用の小銭（9/23 大阪駅）</span></div>
+      <div class="item"><span class="box"></span><span class="txt">お土産用の余裕スペース</span></div>
     </div>
-    <p class="sub">行者還トンネル西口 → 弥山 → 八経ヶ岳 1,915m 往復（YAMAP データ連携）</p>
-    <div class="mt-stats">
-      <div class="s"><div class="n">9.4<span style="font-size:11px">km</span></div><div class="l">距離</div></div>
-      <div class="s"><div class="n">1,125</div><div class="l">のぼり＝くだり m</div></div>
-      <div class="s"><div class="n">26</div><div class="l">コース定数（きつい）</div></div>
-      <div class="s"><div class="n">110%</div><div class="l">ペース倍率（やや速い）</div></div>
+
+    <div class="card pack">
+      <div class="card-head">
+        <span class="tag"><svg class="ic"><use href="#i-note"/></svg>メモ</span>
+        <div class="card-title">座席番号・予約番号・連絡先</div>
+      </div>
+      <div class="memo">
+        <textarea id="memo" placeholder="例）そらかぜ号 予約番号 ／ 千石タクシー 000-000-0000 ／ 名古屋のホテル …"></textarea>
+        <p>この端末に自動保存されます。</p>
+      </div>
     </div>
-    <dl class="kv">
-      <div><dt>利用可能時間</dt><dd>7時間15分（標準CT 5〜6時間）→ 大幅な安全マージンあり</dd></div>
-      <div><dt>注意</dt><dd><span style="color:var(--accent);font-weight:700">電波不通エリア。</span>オフライン地図を事前ダウンロード</dd></div>
-      <div><dt>タイムリミット</dt><dd>17:00 タクシーお迎え／18:12 天川川合バス発</dd></div>
-    </dl>
-  </div>
 
-  <ul class="timeline">
-    <li class="tl"><div class="tl-time"><span class="t-main">6:00</span><span class="t-sub">30</span></div><div class="tl-content"><div class="tl-main"><span class="ico" role="img" aria-label="起床"><svg class="ic" viewBox="0 0 24 24"><title>起床</title><path d="M8 12a4 4 0 0 1 8 0"/><path d="M12 4.2v2.2M5.8 8.6l1.6 1.6M18.2 8.6l-1.6 1.6M2.5 15h19M4 18.2h16"/></svg></span>起床、準備</div></div></li>
-    <li class="tl"><div class="tl-time"><span class="t-main">6:30</span><span class="t-sub">30</span></div><div class="tl-content"><div class="tl-main"><span class="ico" role="img" aria-label="朝食"><svg class="ic" viewBox="0 0 24 24"><title>朝食</title><path d="M6 2v6.3M7.6 2v6.3M9.2 2v6.3M6 8.3a1.6 1.6 0 0 0 3.2 0M7.6 8.3V22"/><path d="M16.7 2c-1.7 0-3 2.5-3 5.6 0 2.5 1 4.7 2.3 5.3V22"/></svg></span>朝食（ビュッフェ）</div></div></li>
-    <li class="tl move"><div class="tl-time"><span class="t-main">7:00</span><span class="t-sub">17</span></div><div class="tl-content"><div class="tl-main"><span class="ico" role="img" aria-label="徒歩"><svg class="ic" viewBox="0 0 24 24"><title>徒歩</title><circle cx="12.5" cy="4.3" r="1.8"/><path d="M12.5 6.6v4.3l-3 2.7M12.5 10.9l3.3 2.4-.8 5.4M9.3 13.4l3.2-1.1M9 21l1.7-4.8M14.6 21l-1-4.9"/></svg></span>ホテル → 大和八木駅南口バス停</div></div></li>
-    <li class="tl move"><div class="tl-time"><span class="t-main">7:17</span><span class="t-sub">53</span></div><div class="tl-content"><div class="tl-main"><span class="ico" role="img" aria-label="バス"><svg class="ic" viewBox="0 0 24 24"><title>バス</title><rect x="3.5" y="4.5" width="17" height="12" rx="2.2"/><path d="M3.5 10.5h17"/><rect x="5.7" y="6.3" width="4.6" height="3.1" rx="0.6"/><rect x="11.5" y="6.3" width="4.6" height="3.1" rx="0.6"/><rect x="17.3" y="6.3" width="1.6" height="3.1" rx="0.4"/><circle cx="7.3" cy="18.2" r="1.3"/><circle cx="16.7" cy="18.2" r="1.3"/></svg></span>大和八木駅南口 → 下市口駅</div><div class="tl-detail"><span>奈良交通 52系統・下市口駅行</span></div></div></li>
-    <li class="tl"><div class="tl-time"><span class="t-main">8:10</span><span class="t-sub">10</span></div><div class="tl-content"><div class="tl-main"><span class="ico" role="img" aria-label="待機"><svg class="ic" viewBox="0 0 24 24"><title>待機</title><circle cx="12" cy="12" r="8.3"/><path d="M12 7.2V12l3.4 2"/></svg></span>乗り換え・バス待機</div></div></li>
-    <li class="tl move"><div class="tl-time"><span class="t-main">8:20</span><span class="t-sub">42</span></div><div class="tl-content"><div class="tl-main"><span class="ico" role="img" aria-label="バス"><svg class="ic" viewBox="0 0 24 24"><title>バス</title><rect x="3.5" y="4.5" width="17" height="12" rx="2.2"/><path d="M3.5 10.5h17"/><rect x="5.7" y="6.3" width="4.6" height="3.1" rx="0.6"/><rect x="11.5" y="6.3" width="4.6" height="3.1" rx="0.6"/><rect x="17.3" y="6.3" width="1.6" height="3.1" rx="0.4"/><circle cx="7.3" cy="18.2" r="1.3"/><circle cx="16.7" cy="18.2" r="1.3"/></svg></span>下市口駅 → 天川川合</div><div class="tl-detail"><span>急行2系統・洞川温泉行</span></div></div></li>
-    <li class="tl"><div class="tl-time"><span class="t-main">9:02</span><span class="t-sub">18</span></div><div class="tl-content"><div class="tl-main"><span class="ico" role="img" aria-label="待機"><svg class="ic" viewBox="0 0 24 24"><title>待機</title><circle cx="12" cy="12" r="8.3"/><path d="M12 7.2V12l3.4 2"/></svg></span>天川川合でタクシー合流待ち</div><div class="tl-detail"><span class="warn">事前手配が鉄則</span></div></div></li>
-    <li class="tl move"><div class="tl-time"><span class="t-main">9:20</span><span class="t-sub">30</span></div><div class="tl-content"><div class="tl-main"><span class="ico" role="img" aria-label="タクシー"><svg class="ic" viewBox="0 0 24 24"><title>タクシー</title><rect x="10" y="3.2" width="4" height="1.8" rx="0.4"/><path d="M4 16.5V12a1 1 0 0 1 .8-1l1.5-3.6A2 2 0 0 1 8.1 6h7.8a2 2 0 0 1 1.8 1.4L19.2 11a1 1 0 0 1 .8 1v4.5"/><path d="M3.5 16.5h17"/><path d="M6.3 11h11.4"/><circle cx="7.5" cy="18" r="1.4"/><circle cx="16.5" cy="18" r="1.4"/></svg></span>天川川合 → 行者還トンネル西口</div><div class="tl-detail"><span class="warn">往復とも事前予約必須／未予約</span></div></div></li>
-    <li class="tl"><div class="tl-time"><span class="t-main">9:50</span><span class="t-sub">10</span></div><div class="tl-content"><div class="tl-main"><span class="ico" role="img" aria-label="準備"><svg class="ic" viewBox="0 0 24 24"><title>準備</title><path d="M8 8.2V6.6a4 4 0 0 1 8 0v1.6"/><path d="M6.5 9.2h11a1.6 1.6 0 0 1 1.6 1.6v9a1.6 1.6 0 0 1-1.6 1.6h-11a1.6 1.6 0 0 1-1.6-1.6v-9a1.6 1.6 0 0 1 1.6-1.6z"/><path d="M9.5 13h5M9.5 16.4h5"/></svg></span>登山口着、登山準備・トイレ</div></div></li>
-    <li class="tl hike"><div class="tl-time"><span class="t-main">10:00</span><span class="t-sub">6:45</span></div><div class="tl-content"><div class="tl-main"><span class="ico" role="img" aria-label="登山"><svg class="ic" viewBox="0 0 24 24"><title>登山</title><path d="M2.5 19 9 8l3 4.5L15.5 6 21.5 19z"/><path d="M13.7 8.7l1.8 2.2 1.8-2.2.8 1"/></svg></span>八経ヶ岳（1,915m）往復</div><div class="tl-detail"><span>標準CT 5〜6時間／<span class="warn">電波不通エリア</span>／十分なゆとり枠</span></div></div></li>
-    <li class="tl"><div class="tl-time"><span class="t-main">16:45</span><span class="t-sub">15</span></div><div class="tl-content"><div class="tl-main"><span class="ico" role="img" aria-label="待機"><svg class="ic" viewBox="0 0 24 24"><title>待機</title><circle cx="12" cy="12" r="8.3"/><path d="M12 7.2V12l3.4 2"/></svg></span>下山、タクシー待機</div></div></li>
-    <li class="tl move"><div class="tl-time"><span class="t-main">17:00</span><span class="t-sub">30</span></div><div class="tl-content"><div class="tl-main"><span class="ico" role="img" aria-label="タクシー"><svg class="ic" viewBox="0 0 24 24"><title>タクシー</title><rect x="10" y="3.2" width="4" height="1.8" rx="0.4"/><path d="M4 16.5V12a1 1 0 0 1 .8-1l1.5-3.6A2 2 0 0 1 8.1 6h7.8a2 2 0 0 1 1.8 1.4L19.2 11a1 1 0 0 1 .8 1v4.5"/><path d="M3.5 16.5h17"/><path d="M6.3 11h11.4"/><circle cx="7.5" cy="18" r="1.4"/><circle cx="16.5" cy="18" r="1.4"/></svg></span>行者還トンネル西口 → 天川川合</div><div class="tl-detail"><span>行きの乗車時に 17:00 お迎えを確約</span></div></div></li>
-    <li class="tl"><div class="tl-time"><span class="t-main">17:30</span><span class="t-sub">42</span></div><div class="tl-content"><div class="tl-main"><span class="ico" role="img" aria-label="待機"><svg class="ic" viewBox="0 0 24 24"><title>待機</title><circle cx="12" cy="12" r="8.3"/><path d="M12 7.2V12l3.4 2"/></svg></span>バス待機</div></div></li>
-    <li class="tl move"><div class="tl-time"><span class="t-main">18:12</span><span class="t-sub">57</span></div><div class="tl-content"><div class="tl-main"><span class="ico" role="img" aria-label="バス"><svg class="ic" viewBox="0 0 24 24"><title>バス</title><rect x="3.5" y="4.5" width="17" height="12" rx="2.2"/><path d="M3.5 10.5h17"/><rect x="5.7" y="6.3" width="4.6" height="3.1" rx="0.6"/><rect x="11.5" y="6.3" width="4.6" height="3.1" rx="0.6"/><rect x="17.3" y="6.3" width="1.6" height="3.1" rx="0.4"/><circle cx="7.3" cy="18.2" r="1.3"/><circle cx="16.7" cy="18.2" r="1.3"/></svg></span>天川川合 → 下市口駅</div><div class="tl-detail"><span>2系統・大淀バスセンター行</span></div></div></li>
-    <li class="tl"><div class="tl-time"><span class="t-main">19:09</span><span class="t-sub">23</span></div><div class="tl-content"><div class="tl-main"><span class="ico" role="img" aria-label="徒歩"><svg class="ic" viewBox="0 0 24 24"><title>徒歩</title><circle cx="12.5" cy="4.3" r="1.8"/><path d="M12.5 6.6v4.3l-3 2.7M12.5 10.9l3.3 2.4-.8 5.4M9.3 13.4l3.2-1.1M9 21l1.7-4.8M14.6 21l-1-4.9"/></svg></span>下市口駅へ徒歩移動・乗り換え待機</div></div></li>
-    <li class="tl move"><div class="tl-time"><span class="t-main">19:32</span><span class="t-sub">30</span></div><div class="tl-content"><div class="tl-main"><span class="ico" role="img" aria-label="鉄道"><svg class="ic" viewBox="0 0 24 24"><title>鉄道</title><path d="M3.5 14.2V9.3a2 2 0 0 1 2-2h10c3 0 5 2.1 5 4.7v2.2a1 1 0 0 1-1 1h-15a1 1 0 0 1-1-1z"/><path d="M6 10.8h3.2M10.6 10.8h3.2M15.2 10.8h2.3"/><circle cx="7" cy="18.3" r="1.3"/><circle cx="17" cy="18.3" r="1.3"/></svg></span>下市口 → 橿原神宮前</div><div class="tl-detail"><span>近鉄吉野線・急行 大阪阿部野橋行</span></div></div></li>
-    <li class="tl move"><div class="tl-time"><span class="t-main">20:09</span><span class="t-sub">5</span></div><div class="tl-content"><div class="tl-main"><span class="ico" role="img" aria-label="鉄道"><svg class="ic" viewBox="0 0 24 24"><title>鉄道</title><path d="M3.5 14.2V9.3a2 2 0 0 1 2-2h10c3 0 5 2.1 5 4.7v2.2a1 1 0 0 1-1 1h-15a1 1 0 0 1-1-1z"/><path d="M6 10.8h3.2M10.6 10.8h3.2M15.2 10.8h2.3"/><circle cx="7" cy="18.3" r="1.3"/><circle cx="17" cy="18.3" r="1.3"/></svg></span>橿原神宮前 → 大和八木</div><div class="tl-detail"><span>近鉄橿原線・普通 大和西大寺行（乗換7分）</span></div></div></li>
-    <li class="tl move"><div class="tl-time"><span class="t-main">20:14</span><span class="t-sub">6</span></div><div class="tl-content"><div class="tl-main"><span class="ico" role="img" aria-label="徒歩"><svg class="ic" viewBox="0 0 24 24"><title>徒歩</title><circle cx="12.5" cy="4.3" r="1.8"/><path d="M12.5 6.6v4.3l-3 2.7M12.5 10.9l3.3 2.4-.8 5.4M9.3 13.4l3.2-1.1M9 21l1.7-4.8M14.6 21l-1-4.9"/></svg></span>大和八木駅 → ホテル帰還</div></div></li>
-    <li class="tl"><div class="tl-time"><span class="t-main">20:20</span><span class="t-sub">1:40</span></div><div class="tl-content"><div class="tl-main"><span class="ico" role="img" aria-label="スカイスパ"><svg class="ic" viewBox="0 0 24 24"><title>スカイスパ</title><path d="M4 18.5a8 8 0 0 1 16 0"/><path d="M7.5 12.3c-1.2 1.2-1.2 2.5 0 3.7M12 10c-1.2 1.2-1.2 3 0 4.2M16.5 12.3c-1.2 1.2-1.2 2.5 0 3.7"/></svg></span>スカイスパ（サウナ・露天風呂）で疲れをリセット、夕食</div></div></li>
-    <li class="tl"><div class="tl-time"><span class="t-main">22:00</span></div><div class="tl-content"><div class="tl-main"><span class="ico" role="img" aria-label="就寝"><svg class="ic" viewBox="0 0 24 24"><title>就寝</title><path d="M20 14.2A8.2 8.2 0 1 1 9.8 4a6.7 6.7 0 0 0 10.2 10.2z"/></svg></span>就寝</div></div></li>
-  </ul>
-  <div class="day-nav">
-    <button data-go="d3">← 9/21 大台ヶ原</button>
-    <button data-go="d5">9/23 帰路 →</button>
-  </div>
-</section>
+  </div><!-- /pack -->
 
-<!-- ================= 9/23 ================= -->
-<section id="d5" role="tabpanel" hidden>
-  <p class="day-title">9/23（水・祝）奈良 → 大阪 → 新潟</p>
-  <p class="day-sub">大阪駅前で買い物してから帰路へ</p>
-  <ul class="timeline">
-    <li class="tl"><div class="tl-time"><span class="t-main">6:30</span><span class="t-sub">30</span></div><div class="tl-content"><div class="tl-main"><span class="ico" role="img" aria-label="起床"><svg class="ic" viewBox="0 0 24 24"><title>起床</title><path d="M8 12a4 4 0 0 1 8 0"/><path d="M12 4.2v2.2M5.8 8.6l1.6 1.6M18.2 8.6l-1.6 1.6M2.5 15h19M4 18.2h16"/></svg></span>起床、準備</div></div></li>
-    <li class="tl"><div class="tl-time"><span class="t-main">7:00</span><span class="t-sub">30</span></div><div class="tl-content"><div class="tl-main"><span class="ico" role="img" aria-label="朝食"><svg class="ic" viewBox="0 0 24 24"><title>朝食</title><path d="M6 2v6.3M7.6 2v6.3M9.2 2v6.3M6 8.3a1.6 1.6 0 0 0 3.2 0M7.6 8.3V22"/><path d="M16.7 2c-1.7 0-3 2.5-3 5.6 0 2.5 1 4.7 2.3 5.3V22"/></svg></span>朝食（ビュッフェ）</div></div></li>
-    <li class="tl"><div class="tl-time"><span class="t-main">7:30</span><span class="t-sub">26</span></div><div class="tl-content"><div class="tl-main"><span class="ico" role="img" aria-label="チェックアウト"><svg class="ic" viewBox="0 0 24 24"><title>チェックアウト</title><circle cx="7.2" cy="7.2" r="3.4"/><circle cx="7.2" cy="7.2" r="1.1"/><path d="M9.6 9.6 19.5 19.5"/><path d="M14.8 14.8l2-2M17.3 17.3l2-2"/></svg></span>チェックアウト、大和八木駅へ徒歩移動</div></div></li>
-    <li class="tl move"><div class="tl-time"><span class="t-main">7:56</span><span class="t-sub">27</span></div><div class="tl-content"><div class="tl-main"><span class="ico" role="img" aria-label="鉄道"><svg class="ic" viewBox="0 0 24 24"><title>鉄道</title><path d="M3.5 14.2V9.3a2 2 0 0 1 2-2h10c3 0 5 2.1 5 4.7v2.2a1 1 0 0 1-1 1h-15a1 1 0 0 1-1-1z"/><path d="M6 10.8h3.2M10.6 10.8h3.2M15.2 10.8h2.3"/><circle cx="7" cy="18.3" r="1.3"/><circle cx="17" cy="18.3" r="1.3"/></svg></span>大和八木 → 鶴橋</div></div></li>
-    <li class="tl move"><div class="tl-time"><span class="t-main">8:28</span><span class="t-sub">16</span></div><div class="tl-content"><div class="tl-main"><span class="ico" role="img" aria-label="鉄道"><svg class="ic" viewBox="0 0 24 24"><title>鉄道</title><path d="M3.5 14.2V9.3a2 2 0 0 1 2-2h10c3 0 5 2.1 5 4.7v2.2a1 1 0 0 1-1 1h-15a1 1 0 0 1-1-1z"/><path d="M6 10.8h3.2M10.6 10.8h3.2M15.2 10.8h2.3"/><circle cx="7" cy="18.3" r="1.3"/><circle cx="17" cy="18.3" r="1.3"/></svg></span>鶴橋 → 大阪</div><div class="tl-detail"><span>乗換 5分</span></div></div></li>
-    <li class="tl"><div class="tl-time"><span class="t-main">8:44</span><span class="t-sub">16</span></div><div class="tl-content"><div class="tl-main"><span class="ico" role="img" aria-label="荷物"><svg class="ic" viewBox="0 0 24 24"><title>荷物</title><path d="M3 7.5h18v11a1.8 1.8 0 0 1-1.8 1.8H4.8A1.8 1.8 0 0 1 3 18.5z"/><path d="M9 7.5V5.3a1.3 1.3 0 0 1 1.3-1.3h3.4A1.3 1.3 0 0 1 16 5.3V7.5"/><path d="M3 12.5h18"/></svg></span>大阪駅・コインロッカーに荷物</div></div></li>
-    <li class="tl"><div class="tl-time"><span class="t-main">9:00</span><span class="t-sub">4:00</span></div><div class="tl-content"><div class="tl-main"><span class="ico" role="img" aria-label="買い物"><svg class="ic" viewBox="0 0 24 24"><title>買い物</title><path d="M6.5 8.2h11l1 12.3H5.5z"/><path d="M9 8.2v-1a3 3 0 0 1 6 0v1"/></svg></span>ヨドバシカメラ・グランフロント・ルクア</div></div></li>
-    <li class="tl move"><div class="tl-time"><span class="t-main">12:55</span><span class="t-sub">30</span></div><div class="tl-content"><div class="tl-main"><span class="ico" role="img" aria-label="バス"><svg class="ic" viewBox="0 0 24 24"><title>バス</title><rect x="3.5" y="4.5" width="17" height="12" rx="2.2"/><path d="M3.5 10.5h17"/><rect x="5.7" y="6.3" width="4.6" height="3.1" rx="0.6"/><rect x="11.5" y="6.3" width="4.6" height="3.1" rx="0.6"/><rect x="17.3" y="6.3" width="1.6" height="3.1" rx="0.4"/><circle cx="7.3" cy="18.2" r="1.3"/><circle cx="16.7" cy="18.2" r="1.3"/></svg></span>大阪マルビル → 伊丹空港</div><div class="tl-detail"><span>リムジンバス</span></div></div></li>
-    <li class="tl"><div class="tl-time"><span class="t-main">13:30</span><span class="t-sub">50</span></div><div class="tl-content"><div class="tl-main"><span class="ico" role="img" aria-label="空港"><svg class="ic" viewBox="0 0 24 24"><title>空港</title><path d="M3 7.5h18v11a1.8 1.8 0 0 1-1.8 1.8H4.8A1.8 1.8 0 0 1 3 18.5z"/><path d="M9 7.5V5.3a1.3 1.3 0 0 1 1.3-1.3h3.4A1.3 1.3 0 0 1 16 5.3V7.5"/><path d="M3 12.5h18"/></svg></span>伊丹空港・搭乗待機</div></div></li>
-    <li class="tl move"><div class="tl-time"><span class="t-main">14:20</span><span class="t-sub">1:00</span></div><div class="tl-content"><div class="tl-main"><span class="ico" role="img" aria-label="空路"><svg class="ic" viewBox="0 0 24 24"><title>空路</title><path d="M10.8 3.2v6.6L3 13.4v1.9l7.8-2.5v4.9l-2.3 1.7v1.6l3.4-1 .1-.1.1.1 3.4 1v-1.6l-2.3-1.7v-4.9l7.8 2.5v-1.9l-7.8-3.6V3.2a1.6 1.6 0 0 0-3.2 0z"/></svg></span>伊丹 → 新潟</div><div class="tl-detail"><span>ANA NH3173便（IBEX運航）／座席 7A・7B・8B</span></div></div></li>
-    <li class="tl move"><div class="tl-time"><span class="t-main">15:20</span><span class="t-sub">40</span></div><div class="tl-content"><div class="tl-main"><span class="ico" role="img" aria-label="車"><svg class="ic" viewBox="0 0 24 24"><title>車</title><path d="M4 16.5V12a1 1 0 0 1 .8-1l1.5-3.6A2 2 0 0 1 8.1 6h7.8a2 2 0 0 1 1.8 1.4L19.2 11a1 1 0 0 1 .8 1v4.5"/><path d="M3.5 16.5h17"/><path d="M6.3 11h11.4"/><circle cx="7.5" cy="18" r="1.4"/><circle cx="16.5" cy="18" r="1.4"/></svg></span>新潟空港 → 自宅</div></div></li>
-    <li class="tl"><div class="tl-time"><span class="t-main">16:00</span></div><div class="tl-content"><div class="tl-main"><span class="ico" role="img" aria-label="帰宅"><svg class="ic" viewBox="0 0 24 24"><title>帰宅</title><path d="M4 11.3 12 4l8 7.3"/><path d="M6 10.2V20h5v-5.2h2V20h5V10.2"/></svg></span>帰宅、おつかれさまでした</div></div></li>
-  </ul>
-  <div class="day-nav">
-    <button data-go="d4">← 9/22 八経ヶ岳</button>
-    <span class="spacer"></span>
-  </div>
-</section>
+  <!-- ══════════ Day1 9/19 ══════════ -->
+  <div class="tab-panel" id="day1">
+    <div class="card day1" data-date="2026-09-19">
+      <div class="card-head">
+        <span class="tag"><svg class="ic"><use href="#i-mtn"/></svg>9/19（土）</span>
+        <div class="card-title">新潟 → 伊吹山 → 彦根</div>
+        <div class="card-sub"><svg class="ic"><use href="#i-lodge"/></svg>泊：ホテルサンルート彦根（ひこにゃんルーム）</div>
+      </div>
+      <div class="mt">
+        <div class="mt-h">山データ　百名山 一座目</div>
+        <div class="mt-route">伊吹山 1,377m ／ 9合目（スカイテラス伊吹山）発着・西登山道コースで登り、東または中央コースで下山</div>
+        <div class="stats">
+          <div class="s"><div class="n">1,377<span class="u">m</span></div><div class="l">標高</div></div>
+          <div class="s"><div class="n">約40<span class="u">分</span></div><div class="l">のぼり<br>（西登山道）</div></div>
+          <div class="s"><div class="n">20〜30<span class="u">分</span></div><div class="l">くだり<br>（東・中央）</div></div>
+          <div class="s"><div class="n">1:45</div><div class="l">現地の<br>持ち時間</div></div>
+        </div>
+      </div>
+      <div class="trail">
+        <div class="tl" data-t="06:30"><div class="t-start">6:30</div><div class="t-dur">0:50</div><div class="t-ico"><svg class="ic"><use href="#i-sun"/></svg></div><div class="t-sum">起床、準備</div></div>
+        <div class="tl" data-t="07:20"><div class="t-start">7:20</div><div class="t-dur">0:15</div><div class="t-ico"><svg class="ic"><use href="#i-car"/></svg></div><div class="t-sum">車（自宅→新潟空港）</div></div>
+        <div class="tl" data-t="07:35"><div class="t-start">7:35</div><div class="t-dur">1:00</div><div class="t-ico"><svg class="ic"><use href="#i-airport"/></svg></div><div class="t-sum">新潟空港 チェックイン・搭乗待機</div><div class="t-det">出発30分前に手続き終了</div></div>
+        <div class="tl" data-t="08:35"><div class="t-start">8:35</div><div class="t-dur">1:20</div><div class="t-ico"><svg class="ic"><use href="#i-plane"/></svg></div><div class="t-sum">トキエア BV-401（新潟→中部国際）</div><div class="t-det">座席 3A・3B・3D</div></div>
+        <div class="tl" data-t="09:55"><div class="t-start">9:55</div><div class="t-dur">0:22</div><div class="t-ico"><svg class="ic"><use href="#i-walk"/></svg></div><div class="t-sum">中部国際空港 到着・駅へ移動</div><div class="t-det">10:17 の名鉄特急に乗る</div></div>
+        <div class="tl" data-t="10:17"><div class="t-start">10:17</div><div class="t-dur">0:32</div><div class="t-ico"><svg class="ic"><use href="#i-train"/></svg></div><div class="t-sum">名鉄特急（中部国際空港→金山）</div><div class="t-det">名鉄岐阜行・一部特別車／7駅</div></div>
+        <div class="tl" data-t="10:49"><div class="t-start">10:49</div><div class="t-dur">0:05</div><div class="t-ico"><svg class="ic"><use href="#i-swap"/></svg></div><div class="t-sum">金山駅 乗り換え</div><div class="t-det">徒歩約3分</div></div>
+        <div class="tl" data-t="10:54"><div class="t-start">10:54</div><div class="t-dur">0:39</div><div class="t-ico"><svg class="ic"><use href="#i-train"/></svg></div><div class="t-sum">東海道本線 新快速（金山→大垣）</div><div class="t-det">大垣行・<span class="hl">4番ホーム</span>／6駅</div></div>
+        <div class="tl" data-t="11:33"><div class="t-start">11:33</div><div class="t-dur">0:08</div><div class="t-ico"><svg class="ic"><use href="#i-swap"/></svg></div><div class="t-sum">大垣駅 乗り換え</div><div class="t-det">徒歩約2分</div></div>
+        <div class="tl" data-t="11:41"><div class="t-start">11:41</div><div class="t-dur">0:14</div><div class="t-ico"><svg class="ic"><use href="#i-train"/></svg></div><div class="t-sum">東海道本線 普通（大垣→関ケ原）</div><div class="t-det">米原行・<span class="hl">1番ホーム</span>／2駅</div></div>
+        <div class="tl" data-t="11:55"><div class="t-start">11:55</div><div class="t-dur">0:45</div><div class="t-ico"><svg class="ic"><use href="#i-taxi"/></svg></div><div class="t-sum">タクシー（関ケ原駅→伊吹山9合目）</div><div class="t-det"><span class="warn">事前手配</span>。スカイテラス伊吹山まで上がる</div></div>
+        <div class="tl" data-t="12:40"><div class="t-start">12:40</div><div class="t-dur">0:50</div><div class="t-ico"><svg class="ic"><use href="#i-fork"/></svg></div><div class="t-sum">スカイテラス伊吹山で昼食・登山準備</div></div>
+        <div class="tl hike" data-t="13:30"><div class="t-start">13:30</div><div class="t-dur">0:40</div><div class="t-ico"><svg class="ic"><use href="#i-mtn"/></svg></div><div class="t-sum">登り（西登山道コース→山頂）</div><div class="t-det">琵琶湖を望む雄大なパノラマと高山植物</div></div>
+        <div class="tl hike" data-t="14:10"><div class="t-start">14:10</div><div class="t-dur">0:35</div><div class="t-ico"><svg class="ic"><use href="#i-flag"/></svg></div><div class="t-sum">伊吹山 山頂（1,377m）</div><div class="t-det">山頂碑・日本武尊像で登頂記念。売店（対山館・えびすや等）で山バッジ</div></div>
+        <div class="tl hike" data-t="14:45"><div class="t-start">14:45</div><div class="t-dur">0:30</div><div class="t-ico"><svg class="ic"><use href="#i-mtn"/></svg></div><div class="t-sum">下り（東または中央コース→駐車場）</div></div>
+        <div class="tl" data-t="15:15"><div class="t-start">15:15</div><div class="t-dur">0:05</div><div class="t-ico"><svg class="ic"><use href="#i-walk"/></svg></div><div class="t-sum">バス乗り場へ</div></div>
+        <div class="tl" data-t="15:20"><div class="t-start">15:20</div><div class="t-dur">1:20</div><div class="t-ico"><svg class="ic"><use href="#i-bus"/></svg></div><div class="t-sum">伊吹山登山バス（スカイテラス伊吹山→米原駅東口）</div><div class="t-det"><span class="hl">15:20発</span>。16:40 米原駅東口着</div></div>
+        <div class="tl" data-t="16:40"><div class="t-start">16:40</div><div class="t-dur">0:05</div><div class="t-ico"><svg class="ic"><use href="#i-swap"/></svg></div><div class="t-sum">米原駅 乗り換え</div></div>
+        <div class="tl" data-t="16:45"><div class="t-start">16:45</div><div class="t-dur">0:15</div><div class="t-ico"><svg class="ic"><use href="#i-train"/></svg></div><div class="t-sum">JR琵琶湖線（米原→彦根）</div><div class="t-det">1駅・約5分</div></div>
+        <div class="tl" data-t="17:00"><div class="t-start">17:00</div><div class="t-dur">0:30</div><div class="t-ico"><svg class="ic"><use href="#i-lodge"/></svg></div><div class="t-sum">ホテルサンルート彦根 チェックイン</div><div class="t-det">彦根駅西口すぐ／ひこにゃんルーム</div></div>
+        <div class="tl" data-t="17:30"><div class="t-start">17:30</div><div class="t-dur">4:00</div><div class="t-ico"><svg class="ic"><use href="#i-fork"/></svg></div><div class="t-sum">夕食、自由時間</div></div>
+        <div class="tl stay" data-t="21:30"><div class="t-start">21:30</div><div class="t-dur">—</div><div class="t-ico"><svg class="ic"><use href="#i-moon"/></svg></div><div class="t-sum">就寝</div><div class="t-det">明日は8:30の彦根城開門に合わせて動く</div></div>
+      </div>
+      <div class="note">
+        <div class="note-h">この日のポイント</div>
+        <ul>
+          <li>関ケ原駅からのタクシーは事前手配。当日その場で拾える前提にしない。</li>
+          <li>15:20 の登山バスがこの日の帰り道。下山は 15:15 までに終える。</li>
+          <li>空港から関ケ原まで1時間38分。10:17 の名鉄特急に乗れれば、あとは金山3分・大垣2分の乗換をこなすだけ。</li>
+        </ul>
+      </div>
+    </div>
+  </div><!-- /day1 -->
 
-</main>
+  <!-- ══════════ Day2 9/20 ══════════ -->
+  <div class="tab-panel" id="day2">
+    <div class="card day2" data-date="2026-09-20">
+      <div class="card-head">
+        <span class="tag"><svg class="ic"><use href="#i-camera"/></svg>9/20（日）</span>
+        <div class="card-title">彦根城 → 名古屋で家族観光 → 奈良へ</div>
+        <div class="card-sub"><svg class="ic"><use href="#i-lodge"/></svg>泊：CANDEO HOTELS 奈良橿原</div>
+      </div>
+      <div class="trail">
+        <div class="tl" data-t="07:00"><div class="t-start">7:00</div><div class="t-dur">0:45</div><div class="t-ico"><svg class="ic"><use href="#i-fork"/></svg></div><div class="t-sum">朝食（お食事処 花しょうぶ）</div><div class="t-det">ホテル内</div></div>
+        <div class="tl" data-t="08:15"><div class="t-start">8:15</div><div class="t-dur">0:15</div><div class="t-ico"><svg class="ic"><use href="#i-bag"/></svg></div><div class="t-sum">チェックアウト・荷物をフロントに預ける</div><div class="t-det">彦根城まで徒歩約15分（タクシーなら約5分）</div></div>
+        <div class="tl" data-t="08:30"><div class="t-start">8:30</div><div class="t-dur">1:00</div><div class="t-ico"><svg class="ic"><use href="#i-camera"/></svg></div><div class="t-sum">彦根城 観光（開門ダッシュ）</div><div class="t-det"><span class="hl">8:30開門</span>と同時に天守へ</div></div>
+        <div class="tl" data-t="09:35"><div class="t-start">9:35</div><div class="t-dur">0:12</div><div class="t-ico"><svg class="ic"><use href="#i-walk"/></svg></div><div class="t-sum">彦根駅へ戻り、荷物を受け取り</div></div>
+        <div class="tl" data-t="09:47"><div class="t-start">9:47</div><div class="t-dur">0:42</div><div class="t-ico"><svg class="ic"><use href="#i-train"/></svg></div><div class="t-sum">JR東海道本線 新快速（彦根→名古屋）</div><div class="t-det">豊橋行・乗換なし直通／10:29 着</div></div>
+        <div class="tl" data-t="10:30"><div class="t-start">10:30</div><div class="t-dur">8:00</div><div class="t-ico"><svg class="ic"><use href="#i-eye"/></svg></div><div class="t-sum">名古屋駅で実家家族と合流・観光</div><div class="t-det">名古屋駅で解散。プラネタリウム案あり（名古屋市科学館）</div></div>
+        <div class="tl" data-t="18:30"><div class="t-start">18:30</div><div class="t-dur">1:50</div><div class="t-ico"><svg class="ic"><use href="#i-train"/></svg></div><div class="t-sum">アーバンライナー（近鉄名古屋→大和八木）</div><div class="t-det"><span class="warn">特急券の予約確認</span></div></div>
+        <div class="tl" data-t="20:20"><div class="t-start">20:20</div><div class="t-dur">0:05</div><div class="t-ico"><svg class="ic"><use href="#i-walk"/></svg></div><div class="t-sum">徒歩（大和八木駅→ホテル）</div><div class="t-det">駅至近・乗換不要</div></div>
+        <div class="tl" data-t="20:25"><div class="t-start">20:25</div><div class="t-dur">0:15</div><div class="t-ico"><svg class="ic"><use href="#i-lodge"/></svg></div><div class="t-sum">CANDEO HOTELS 奈良橿原 チェックイン</div><div class="t-det">予約済（3泊）</div></div>
+        <div class="tl" data-t="20:40"><div class="t-start">20:40</div><div class="t-dur">1:00</div><div class="t-ico"><svg class="ic"><use href="#i-bath"/></svg></div><div class="t-sum">最上階スカイスパ（露天風呂）</div></div>
+        <div class="tl stay" data-t="21:40"><div class="t-start">21:40</div><div class="t-dur">—</div><div class="t-ico"><svg class="ic"><use href="#i-moon"/></svg></div><div class="t-sum">就寝</div><div class="t-det">明日は 8:16 のバス。荷物は夜のうちに分ける</div></div>
+      </div>
+      <div class="note">
+        <div class="note-h">この日のポイント</div>
+        <ul>
+          <li>8:30 の開門に合わせて天守へ。荷物はフロント預けで身軽に動く。</li>
+          <li>9:47 の新快速は名古屋まで直通。これを逃すと合流時刻がずれる。</li>
+          <li>ここから3泊は大和八木が拠点。登山装備とそれ以外を、この夜のうちに仕分けておく。</li>
+        </ul>
+      </div>
+    </div>
+  </div><!-- /day2 -->
 
-<footer>
-  <p class="mark">△ △</p>
-  <p>NAGOYA — NARA ／ 2026 AUTUMN</p>
-</footer>
+  <!-- ══════════ Day3 9/21 ══════════ -->
+  <div class="tab-panel" id="day3">
+    <div class="card day3" data-date="2026-09-21">
+      <div class="card-head">
+        <span class="tag"><svg class="ic"><use href="#i-mtn"/></svg>9/21（月・祝）</span>
+        <div class="card-title">大台ヶ原　百名山 一座目</div>
+        <div class="card-sub"><svg class="ic"><use href="#i-clock"/></svg>現地 11:16 着 〜 16:00 発（滞在 4時間44分）</div>
+      </div>
+      <div class="mt">
+        <div class="mt-h">山データ（YAMAP）</div>
+        <div class="mt-route">日出ヶ岳 1,695m ／ 東大台コース周回 → 売店ハント</div>
+        <div class="stats">
+          <div class="s"><div class="n">7.2<span class="u">km</span></div><div class="l">距離</div></div>
+          <div class="s"><div class="n">477 / 473</div><div class="l">のぼり／くだり m</div></div>
+          <div class="s"><div class="n">13</div><div class="l">コース定数<br>（ふつう）</div></div>
+          <div class="s"><div class="n">100<span class="u">%</span></div><div class="l">ペース倍率<br>（標準）</div></div>
+        </div>
+      </div>
+      <div class="trail">
+        <div class="tl" data-t="07:00"><div class="t-start">7:00</div><div class="t-dur">0:30</div><div class="t-ico"><svg class="ic"><use href="#i-sun"/></svg></div><div class="t-sum">起床、準備</div></div>
+        <div class="tl" data-t="07:30"><div class="t-start">7:30</div><div class="t-dur">0:30</div><div class="t-ico"><svg class="ic"><use href="#i-fork"/></svg></div><div class="t-sum">朝食（ビュッフェ）</div></div>
+        <div class="tl" data-t="08:00"><div class="t-start">8:00</div><div class="t-dur">0:15</div><div class="t-ico"><svg class="ic"><use href="#i-walk"/></svg></div><div class="t-sum">徒歩（ホテル→大和八木駅南口1 バス停）</div></div>
+        <div class="tl" data-t="08:15"><div class="t-start">8:15</div><div class="t-dur">3:01</div><div class="t-ico"><svg class="ic"><use href="#i-bus"/></svg></div><div class="t-sum">そらかぜ号（大和八木駅南口1→大台ヶ原）</div><div class="t-det">予約済・0001便 01号車／<span class="hl">8:15発</span></div></div>
+        <div class="tl hike" data-t="11:16"><div class="t-start">11:16</div><div class="t-dur">4:44</div><div class="t-ico"><svg class="ic"><use href="#i-flag"/></svg></div><div class="t-sum">日出ヶ岳（1,695m）東大台コース周回</div><div class="t-det">下山後は売店ハント。<span class="hl">16:00発</span>のバスに集合</div></div>
+        <div class="tl" data-t="16:00"><div class="t-start">16:00</div><div class="t-dur">3:10</div><div class="t-ico"><svg class="ic"><use href="#i-bus"/></svg></div><div class="t-sum">そらかぜ号（大台ヶ原→大和八木駅南口1）</div><div class="t-det">予約済・0101便 01号車／19:10 着</div></div>
+        <div class="tl" data-t="19:10"><div class="t-start">19:10</div><div class="t-dur">1:50</div><div class="t-ico"><svg class="ic"><use href="#i-fork"/></svg></div><div class="t-sum">夕食、ホテル、入浴</div></div>
+        <div class="tl stay" data-t="21:00"><div class="t-start">21:00</div><div class="t-dur">—</div><div class="t-ico"><svg class="ic"><use href="#i-moon"/></svg></div><div class="t-sum">就寝</div><div class="t-det">翌日の本格登山に備えて早めに</div></div>
+      </div>
+      <div class="note">
+        <div class="note-h">この日のポイント</div>
+        <ul>
+          <li>行きも帰りもバスは1本きり。8:15 発に乗り遅れない、16:00 発を逃さない。</li>
+          <li>滞在4時間44分に対し周回は標準3時間ほど。売店と展望台にゆっくり時間を使える。</li>
+          <li>大台ヶ原は雨の多い山。晴れていてもレインウェアは必ずザックへ。</li>
+        </ul>
+      </div>
+    </div>
+  </div><!-- /day3 -->
+
+  <!-- ══════════ Day4 9/22 ══════════ -->
+  <div class="tab-panel" id="day4">
+    <div class="card day4" data-date="2026-09-22">
+      <div class="card-head">
+        <span class="tag"><svg class="ic"><use href="#i-mtn"/></svg>9/22（火・祝）</span>
+        <div class="card-title">大峰山・八経ヶ岳　百名山 二座目</div>
+        <div class="card-sub"><svg class="ic"><use href="#i-warn"/></svg>この旅の山場。17:00 タクシー／18:12 バスがタイムリミット</div>
+      </div>
+      <div class="mt">
+        <div class="mt-h">山データ（YAMAP）</div>
+        <div class="mt-route">行者還トンネル西口 → 弥山 → 八経ヶ岳 1,915m 往復</div>
+        <div class="stats">
+          <div class="s"><div class="n">9.4<span class="u">km</span></div><div class="l">距離</div></div>
+          <div class="s"><div class="n">1,125</div><div class="l">のぼり＝くだり m</div></div>
+          <div class="s"><div class="n">26</div><div class="l">コース定数<br>（きつい）</div></div>
+          <div class="s"><div class="n">110<span class="u">%</span></div><div class="l">ペース倍率<br>（やや速い）</div></div>
+        </div>
+      </div>
+      <div class="trail">
+        <div class="tl" data-t="06:00"><div class="t-start">6:00</div><div class="t-dur">0:30</div><div class="t-ico"><svg class="ic"><use href="#i-sun"/></svg></div><div class="t-sum">起床、準備</div></div>
+        <div class="tl" data-t="06:30"><div class="t-start">6:30</div><div class="t-dur">0:30</div><div class="t-ico"><svg class="ic"><use href="#i-fork"/></svg></div><div class="t-sum">朝食（ビュッフェ）</div></div>
+        <div class="tl" data-t="07:00"><div class="t-start">7:00</div><div class="t-dur">0:17</div><div class="t-ico"><svg class="ic"><use href="#i-walk"/></svg></div><div class="t-sum">徒歩（ホテル→大和八木駅南口バス停）</div></div>
+        <div class="tl" data-t="07:17"><div class="t-start">7:17</div><div class="t-dur">0:53</div><div class="t-ico"><svg class="ic"><use href="#i-bus"/></svg></div><div class="t-sum">奈良交通52系統（大和八木駅南口→下市口駅）</div><div class="t-det">下市口駅行</div></div>
+        <div class="tl" data-t="08:10"><div class="t-start">8:10</div><div class="t-dur">0:10</div><div class="t-ico"><svg class="ic"><use href="#i-swap"/></svg></div><div class="t-sum">下市口駅 乗り換え・バス待機</div></div>
+        <div class="tl" data-t="08:20"><div class="t-start">8:20</div><div class="t-dur">0:42</div><div class="t-ico"><svg class="ic"><use href="#i-bus"/></svg></div><div class="t-sum">急行2系統（下市口駅→天川川合）</div><div class="t-det">洞川温泉行</div></div>
+        <div class="tl" data-t="09:02"><div class="t-start">9:02</div><div class="t-dur">0:18</div><div class="t-ico"><svg class="ic"><use href="#i-clock"/></svg></div><div class="t-sum">天川川合でタクシー合流待ち</div><div class="t-det"><span class="warn">事前手配が鉄則</span></div></div>
+        <div class="tl" data-t="09:20"><div class="t-start">9:20</div><div class="t-dur">0:30</div><div class="t-ico"><svg class="ic"><use href="#i-taxi"/></svg></div><div class="t-sum">タクシー（天川川合→行者還トンネル西口）</div><div class="t-det">この乗車時に<span class="hl">17:00 のお迎え</span>を確約する</div></div>
+        <div class="tl" data-t="09:50"><div class="t-start">9:50</div><div class="t-dur">0:10</div><div class="t-ico"><svg class="ic"><use href="#i-gear"/></svg></div><div class="t-sum">登山口着、登山準備・トイレ</div></div>
+        <div class="tl hike" data-t="10:00"><div class="t-start">10:00</div><div class="t-dur">6:45</div><div class="t-ico"><svg class="ic"><use href="#i-flag"/></svg></div><div class="t-sum">八経ヶ岳（1,915m）往復</div><div class="t-det">標準CT 5〜6時間／<span class="warn">電波不通エリア</span>／ゆとり枠 約1時間</div></div>
+        <div class="tl" data-t="16:45"><div class="t-start">16:45</div><div class="t-dur">0:15</div><div class="t-ico"><svg class="ic"><use href="#i-clock"/></svg></div><div class="t-sum">下山、タクシー待機</div></div>
+        <div class="tl" data-t="17:00"><div class="t-start">17:00</div><div class="t-dur">0:30</div><div class="t-ico"><svg class="ic"><use href="#i-taxi"/></svg></div><div class="t-sum">タクシー（行者還トンネル西口→天川川合）</div></div>
+        <div class="tl" data-t="17:30"><div class="t-start">17:30</div><div class="t-dur">0:42</div><div class="t-ico"><svg class="ic"><use href="#i-clock"/></svg></div><div class="t-sum">天川川合 バス待機</div></div>
+        <div class="tl" data-t="18:12"><div class="t-start">18:12</div><div class="t-dur">0:57</div><div class="t-ico"><svg class="ic"><use href="#i-bus"/></svg></div><div class="t-sum">奈良交通2系統（天川川合→下市口駅）</div><div class="t-det">大淀バスセンター行</div></div>
+        <div class="tl" data-t="19:09"><div class="t-start">19:09</div><div class="t-dur">0:23</div><div class="t-ico"><svg class="ic"><use href="#i-walk"/></svg></div><div class="t-sum">下市口駅へ徒歩移動・乗り換え待機</div></div>
+        <div class="tl" data-t="19:32"><div class="t-start">19:32</div><div class="t-dur">0:30</div><div class="t-ico"><svg class="ic"><use href="#i-train"/></svg></div><div class="t-sum">近鉄吉野線 急行（下市口→橿原神宮前）</div><div class="t-det">大阪阿部野橋行</div></div>
+        <div class="tl" data-t="20:09"><div class="t-start">20:09</div><div class="t-dur">0:05</div><div class="t-ico"><svg class="ic"><use href="#i-train"/></svg></div><div class="t-sum">近鉄橿原線 普通（橿原神宮前→大和八木）</div><div class="t-det">大和西大寺行（乗換7分）</div></div>
+        <div class="tl" data-t="20:14"><div class="t-start">20:14</div><div class="t-dur">0:06</div><div class="t-ico"><svg class="ic"><use href="#i-walk"/></svg></div><div class="t-sum">徒歩（大和八木駅→ホテル）</div></div>
+        <div class="tl" data-t="20:20"><div class="t-start">20:20</div><div class="t-dur">1:40</div><div class="t-ico"><svg class="ic"><use href="#i-bath"/></svg></div><div class="t-sum">スカイスパで疲れをリセット、夕食</div><div class="t-det">サウナ・露天風呂</div></div>
+        <div class="tl stay" data-t="22:00"><div class="t-start">22:00</div><div class="t-dur">—</div><div class="t-ico"><svg class="ic"><use href="#i-moon"/></svg></div><div class="t-sum">就寝</div></div>
+      </div>
+      <div class="note">
+        <div class="note-h">この日のポイント</div>
+        <ul>
+          <li>タクシーは往復とも事前予約が必須。行きの車内で帰りのお迎え時刻を必ず確定させる。</li>
+          <li>登山中は電波が入らない。連絡も地図の再ダウンロードもできない前提で動く。</li>
+          <li>持ち時間7時間15分に対し標準CTは5〜6時間。1時間強のゆとりを削らないペース配分で。</li>
+          <li>18:12 のバスを逃すと自力で戻る手段がなくなる。16:45 下山がデッドライン。</li>
+        </ul>
+      </div>
+    </div>
+  </div><!-- /day4 -->
+
+  <!-- ══════════ Day5 9/23 ══════════ -->
+  <div class="tab-panel" id="day5">
+    <div class="card day5" data-date="2026-09-23">
+      <div class="card-head">
+        <span class="tag"><svg class="ic"><use href="#i-plane"/></svg>9/23（水・祝）</span>
+        <div class="card-title">奈良 → 大阪 → 新潟</div>
+        <div class="card-sub"><svg class="ic"><use href="#i-clock"/></svg>大阪駅前で買い物してから帰路へ／自宅 16:00</div>
+      </div>
+      <div class="trail">
+        <div class="tl" data-t="06:30"><div class="t-start">6:30</div><div class="t-dur">0:30</div><div class="t-ico"><svg class="ic"><use href="#i-sun"/></svg></div><div class="t-sum">起床、準備</div></div>
+        <div class="tl" data-t="07:00"><div class="t-start">7:00</div><div class="t-dur">0:30</div><div class="t-ico"><svg class="ic"><use href="#i-fork"/></svg></div><div class="t-sum">朝食（ビュッフェ）</div></div>
+        <div class="tl" data-t="07:30"><div class="t-start">7:30</div><div class="t-dur">0:26</div><div class="t-ico"><svg class="ic"><use href="#i-lodge"/></svg></div><div class="t-sum">チェックアウト、大和八木駅へ徒歩移動</div></div>
+        <div class="tl" data-t="07:56"><div class="t-start">7:56</div><div class="t-dur">0:27</div><div class="t-ico"><svg class="ic"><use href="#i-train"/></svg></div><div class="t-sum">近鉄（大和八木→鶴橋）</div></div>
+        <div class="tl" data-t="08:28"><div class="t-start">8:28</div><div class="t-dur">0:16</div><div class="t-ico"><svg class="ic"><use href="#i-train"/></svg></div><div class="t-sum">JR（鶴橋→大阪）</div><div class="t-det">乗換5分</div></div>
+        <div class="tl" data-t="08:44"><div class="t-start">8:44</div><div class="t-dur">0:16</div><div class="t-ico"><svg class="ic"><use href="#i-bag"/></svg></div><div class="t-sum">大阪駅・コインロッカーに荷物</div></div>
+        <div class="tl" data-t="09:00"><div class="t-start">9:00</div><div class="t-dur">3:55</div><div class="t-ico"><svg class="ic"><use href="#i-shop"/></svg></div><div class="t-sum">ヨドバシカメラ・グランフロント・ルクア</div><div class="t-det">ロッカーからの荷物回収を忘れずに</div></div>
+        <div class="tl" data-t="12:55"><div class="t-start">12:55</div><div class="t-dur">0:30</div><div class="t-ico"><svg class="ic"><use href="#i-bus"/></svg></div><div class="t-sum">リムジンバス（大阪マルビル→伊丹空港）</div></div>
+        <div class="tl" data-t="13:30"><div class="t-start">13:30</div><div class="t-dur">0:50</div><div class="t-ico"><svg class="ic"><use href="#i-airport"/></svg></div><div class="t-sum">伊丹空港・搭乗待機</div></div>
+        <div class="tl" data-t="14:20"><div class="t-start">14:20</div><div class="t-dur">1:00</div><div class="t-ico"><svg class="ic"><use href="#i-plane"/></svg></div><div class="t-sum">ANA NH3173（伊丹→新潟）</div><div class="t-det">IBEX運航／座席 7A・7B・8B</div></div>
+        <div class="tl" data-t="15:20"><div class="t-start">15:20</div><div class="t-dur">0:40</div><div class="t-ico"><svg class="ic"><use href="#i-car"/></svg></div><div class="t-sum">車（新潟空港→自宅）</div></div>
+        <div class="tl stay" data-t="16:00"><div class="t-start">16:00</div><div class="t-dur">—</div><div class="t-ico"><svg class="ic"><use href="#i-home"/></svg></div><div class="t-sum">帰宅</div><div class="t-det">おつかれさまでした</div></div>
+      </div>
+      <div class="note">
+        <div class="note-h">この日のポイント</div>
+        <ul>
+          <li>大阪駅前の買い物は約4時間。荷物はコインロッカーへ預けて身軽に。</li>
+          <li>マルビル 12:55 発のリムジンバスが基準。買い物は 12:40 で切り上げる。</li>
+        </ul>
+      </div>
+    </div>
+  </div><!-- /day5 -->
+
+  <div class="foot">名古屋・奈良 2026.9.19 – 9.23</div>
+</div>
 
 <script>
-// ---------- タブ切替（概要＋各日ダイレクト） ----------
-const tabs = [...document.querySelectorAll('.tab')];
-const panelIds = ['overview','d1','d2','d3','d4','d5'];
-
-function currentIndex(){
-  return panelIds.findIndex(pid=>!document.getElementById(pid).hidden);
-}
-
-function showTab(id, dir){
-  const from = currentIndex();
-  const to = panelIds.indexOf(id);
-  if(to === -1 || to === from) return;
-  if(!dir) dir = (to > from) ? 'l' : 'r';  // l=右から入ってくる（進む）
-
-  tabs.forEach(b=>b.setAttribute('aria-selected', b.dataset.tab === id ? 'true':'false'));
-  panelIds.forEach(pid=>{
-    const el = document.getElementById(pid);
-    el.classList.remove('anim-l','anim-r');
-    el.hidden = (pid !== id);
-  });
-  const panel = document.getElementById(id);
-  void panel.offsetWidth;               // アニメ再発火用リフロー
-  panel.classList.add(dir === 'l' ? 'anim-l' : 'anim-r');
-
-  const active = tabs.find(b=>b.dataset.tab === id);
-  if(active) active.scrollIntoView({block:'nearest', inline:'center'});
-  window.scrollTo({top:0});
-}
-tabs.forEach(btn=>btn.addEventListener('click',()=>showTab(btn.dataset.tab)));
-
-// 前後の日へボタン
-document.querySelectorAll('[data-go]').forEach(btn=>{
-  btn.addEventListener('click',()=>showTab(btn.dataset.go));
-});
-
-// ---------- スワイプでタブ移動（指に追従） ----------
 (function(){
-  const area = document.querySelector('main');
-  const THRESHOLD = 70;   // これ以上動かすとタブが切り替わる
-  let sx = 0, sy = 0, dx = 0;
-  let tracking = false;   // タッチ中
-  let locked = false;     // 横スワイプと判定済み
-  let panel = null;
+  "use strict";
+  var NS = 'nagoyanara260919_';
+  var IDS = ['pack','day1','day2','day3','day4','day5'];
 
-  function activePanel(){
-    const i = currentIndex();
-    return i === -1 ? null : document.getElementById(panelIds[i]);
+  /* ── タブ切り替え ── */
+  var btns   = [].slice.call(document.querySelectorAll('.tab-btn'));
+  var panels = [].slice.call(document.querySelectorAll('.tab-panel'));
+
+  function currentIndex(){
+    for (var i=0;i<IDS.length;i++){
+      if (document.getElementById(IDS[i]).classList.contains('is-active')) return i;
+    }
+    return -1;
+  }
+  function activate(id, remember, dir){
+    btns.forEach(function(b){ b.classList.toggle('active', b.getAttribute('data-tab') === id); });
+    panels.forEach(function(p){
+      p.classList.remove('anim-l','anim-r','spring','dragging');
+      p.style.transform = ''; p.style.opacity = '';
+      p.classList.toggle('is-active', p.id === id);
+    });
+    var panel = document.getElementById(id);
+    if (dir){ void panel.offsetWidth; panel.classList.add(dir === 'l' ? 'anim-l' : 'anim-r'); }
+    var active = btns.filter(function(b){ return b.getAttribute('data-tab') === id; })[0];
+    if (active) active.scrollIntoView({block:'nearest', inline:'center'});
+    if (remember){ try{ localStorage.setItem(NS+'tab', id); }catch(e){} }
+  }
+  btns.forEach(function(b){
+    b.addEventListener('click', function(){ activate(b.getAttribute('data-tab'), true); window.scrollTo({top:0}); });
+  });
+
+  /* ── スワイプでタブ移動（指に追従） ── */
+  (function(){
+    var area = document.querySelector('.wrap');
+    var THRESHOLD = 70;
+    var sx=0, sy=0, dx=0, tracking=false, locked=false, panel=null;
+
+    area.addEventListener('touchstart', function(e){
+      if (e.touches.length !== 1) return;
+      sx = e.touches[0].clientX; sy = e.touches[0].clientY;
+      dx = 0; tracking = true; locked = false;
+      var i = currentIndex();
+      panel = i < 0 ? null : document.getElementById(IDS[i]);
+      if (panel) panel.classList.remove('spring','anim-l','anim-r');
+    }, {passive:true});
+
+    area.addEventListener('touchmove', function(e){
+      if (!tracking || !panel) return;
+      dx = e.touches[0].clientX - sx;
+      var dy = e.touches[0].clientY - sy;
+      if (!locked){
+        if (Math.abs(dx) < 12) return;
+        if (Math.abs(dx) < Math.abs(dy) * 1.2){ tracking = false; return; }
+        locked = true;
+        panel.classList.add('dragging');
+      }
+      var i = currentIndex();
+      var atEdge = (dx < 0 && i === IDS.length - 1) || (dx > 0 && i === 0);
+      var follow = dx * (atEdge ? 0.18 : 0.45);
+      panel.style.transform = 'translateX(' + follow + 'px)';
+      panel.style.opacity = Math.max(1 - Math.abs(follow)/400, .65);
+    }, {passive:true});
+
+    area.addEventListener('touchend', function(){
+      if (!tracking && !locked) return;
+      tracking = false;
+      if (!panel) return;
+      panel.classList.remove('dragging');
+      var i = currentIndex();
+      var next = (dx < 0 && i < IDS.length - 1) ? IDS[i+1]
+               : (dx > 0 && i > 0)              ? IDS[i-1] : null;
+      if (locked && next && Math.abs(dx) >= THRESHOLD){
+        panel.style.transform = ''; panel.style.opacity = '';
+        activate(next, true, dx < 0 ? 'l' : 'r');
+        window.scrollTo({top:0});
+      } else {
+        panel.classList.add('spring');
+        panel.style.transform = ''; panel.style.opacity = '';
+        var el = panel;
+        setTimeout(function(){ el.classList.remove('spring'); }, 240);
+      }
+      locked = false; panel = null;
+    }, {passive:true});
+  })();
+
+  /* ── チェックリスト（端末に保存） ── */
+  var state = {};
+  try{ state = JSON.parse(localStorage.getItem(NS+'checks') || '{}') || {}; }catch(e){ state = {}; }
+  function save(){ try{ localStorage.setItem(NS+'checks', JSON.stringify(state)); }catch(e){} }
+
+  function refreshCounters(){
+    [].slice.call(document.querySelectorAll('.counter')).forEach(function(c){
+      var card  = c.closest('.card');
+      var items = [].slice.call(card.querySelectorAll('.item'));
+      var done  = items.filter(function(i){ return i.classList.contains('checked'); }).length;
+      c.textContent = done + ' / ' + items.length;
+    });
+  }
+  [].slice.call(document.querySelectorAll('.item')).forEach(function(item){
+    var key = 'c:' + (item.textContent || '').replace(/\s+/g,' ').trim();
+    if (state[key]) item.classList.add('checked');
+    item.addEventListener('click', function(){
+      var on = item.classList.toggle('checked');
+      if (on) state[key] = 1; else delete state[key];
+      save(); refreshCounters();
+    });
+  });
+  refreshCounters();
+
+  /* ── メモ（端末に保存） ── */
+  var memo = document.getElementById('memo');
+  if (memo){
+    try{ memo.value = localStorage.getItem(NS+'memo') || ''; }catch(e){}
+    memo.addEventListener('input', function(){
+      try{ localStorage.setItem(NS+'memo', memo.value); }catch(e){}
+    });
   }
 
-  area.addEventListener('touchstart', e=>{
-    if(e.touches.length !== 1) return;
-    sx = e.touches[0].clientX;
-    sy = e.touches[0].clientY;
-    dx = 0;
-    tracking = true;
-    locked = false;
-    panel = activePanel();
-    if(panel) panel.classList.remove('spring','anim-l','anim-r');
-  }, {passive:true});
-
-  area.addEventListener('touchmove', e=>{
-    if(!tracking || !panel) return;
-    dx = e.touches[0].clientX - sx;
-    const dy = e.touches[0].clientY - sy;
-
-    // 最初の動きで方向を判定：横が優勢なら追従開始、縦なら以後無視
-    if(!locked){
-      if(Math.abs(dx) < 12) return;
-      if(Math.abs(dx) < Math.abs(dy) * 1.2){ tracking = false; return; }
-      locked = true;
-      panel.classList.add('dragging');
+  /* ── 出発までのカウントダウン ── */
+  var DAYS = ['2026-09-19','2026-09-20','2026-09-21','2026-09-22','2026-09-23'];
+  function todayKey(){
+    var d = new Date();
+    return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
+  }
+  var el = document.getElementById('countdown');
+  if (el){
+    var idx = DAYS.indexOf(todayKey());
+    if (idx >= 0){
+      el.textContent = '旅の ' + (idx+1) + ' 日目';
+    } else {
+      var diff = Math.ceil((new Date('2026-09-19T00:00:00') - new Date()) / 86400000);
+      el.textContent = diff > 0 ? '出発まで あと ' + diff + ' 日' : '';
     }
+  }
 
-    // 端のタブでは行き止まり方向にゴムのような抵抗を付ける
-    const i = currentIndex();
-    const atEdge = (dx < 0 && i === panelIds.length - 1) || (dx > 0 && i === 0);
-    const follow = dx * (atEdge ? 0.18 : 0.45);
-    const fade = Math.max(1 - Math.abs(follow) / 400, .65);
-    panel.style.transform = `translateX(${follow}px)`;
-    panel.style.opacity = fade;
-  }, {passive:true});
+  /* ── 当日は「今ここ」を自動表示 ── */
+  function markNow(){
+    [].slice.call(document.querySelectorAll('.tl.now')).forEach(function(r){ r.classList.remove('now'); });
+    var key = todayKey(), i = DAYS.indexOf(key);
+    if (i < 0) return;
+    var card = document.querySelector('.card[data-date="' + key + '"]');
+    if (!card) return;
+    var now  = new Date(), mins = now.getHours()*60 + now.getMinutes();
+    var rows = [].slice.call(card.querySelectorAll('.tl[data-t]'));
+    var cur  = null;
+    rows.forEach(function(r){
+      var p = r.getAttribute('data-t').split(':');
+      if ((+p[0])*60 + (+p[1]) <= mins) cur = r;
+    });
+    if (cur) cur.classList.add('now');
+  }
 
-  area.addEventListener('touchend', ()=>{
-    if(!tracking && !locked) return;
-    tracking = false;
-    if(!panel) return;
-    panel.classList.remove('dragging');
+  /* ── 初期表示：旅行中はその日のタブ、それ以外は前回のタブ ── */
+  var openTab = null;
+  var di = DAYS.indexOf(todayKey());
+  if (di >= 0){ openTab = 'day' + (di+1); }
+  else { try{ openTab = localStorage.getItem(NS+'tab'); }catch(e){} }
+  if (openTab && document.getElementById(openTab)) activate(openTab, false);
 
-    const i = currentIndex();
-    const next = (dx < 0 && i < panelIds.length - 1) ? panelIds[i + 1]
-               : (dx > 0 && i > 0)                   ? panelIds[i - 1]
-               : null;
-
-    if(locked && next && Math.abs(dx) >= THRESHOLD){
-      // 切替：追従した状態を解除してから新パネルをスライドイン
-      panel.style.transform = '';
-      panel.style.opacity = '';
-      showTab(next, dx < 0 ? 'l' : 'r');
-    }else{
-      // キャンセル or 端：スプリングバックで元の位置へ
-      panel.classList.add('spring');
-      panel.style.transform = '';
-      panel.style.opacity = '';
-      const el = panel;
-      setTimeout(()=>el.classList.remove('spring'), 240);
-    }
-    locked = false;
-    panel = null;
-  }, {passive:true});
+  markNow();
+  setInterval(markNow, 60000);
+  document.addEventListener('visibilitychange', function(){ if (!document.hidden) markNow(); });
 })();
-
-// ---------- やることリスト（localStorage 保存） ----------
-const LS_KEY = 'shiori-nagoya-nara-260919-todo';
-const boxes = document.querySelectorAll('#todoList input[type="checkbox"]');
-const progress = document.getElementById('todoProgress');
-let saved = {};
-try { saved = JSON.parse(localStorage.getItem(LS_KEY)) || {}; } catch(e){ saved = {}; }
-boxes.forEach(b=>{
-  b.checked = !!saved[b.dataset.key];
-  b.addEventListener('change',()=>{
-    saved[b.dataset.key] = b.checked;
-    try { localStorage.setItem(LS_KEY, JSON.stringify(saved)); } catch(e){}
-    renderProgress();
-  });
-});
-function renderProgress(){
-  const done = [...boxes].filter(b=>b.checked).length;
-  progress.textContent = done === boxes.length
-    ? '✓ 手配完了！あとは晴れを祈るだけ'
-    : `${done} / ${boxes.length} 完了`;
-}
-renderProgress();
 </script>
+
 </body>
 </html>
