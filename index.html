@@ -172,6 +172,7 @@ body::before{ /* iPhoneのノッチ／Dynamic Island下の帯 */
 .mt-h{font-size:.74rem;font-weight:700;color:var(--c);letter-spacing:.06em;margin-bottom:.35rem;}
 .mt-route{font-size:.82rem;color:var(--ink-2);line-height:1.55;}
 .stats{display:grid;grid-template-columns:repeat(5,1fr);gap:.25rem;margin-top:.6rem;}
+.stats.stats-3{grid-template-columns:repeat(3,1fr);}
 .stats .s{background:var(--c-bg);border-radius:10px;padding:.5rem .2rem;text-align:center;}
 .stats .n{font-family:var(--font-display);font-weight:700;font-size:.92rem;line-height:1.25;font-variant-numeric:tabular-nums;}
 .stats .n .u{font-size:.6rem;font-weight:500;margin-left:.05rem;}
@@ -484,7 +485,7 @@ body::before{ /* iPhoneのノッチ／Dynamic Island下の帯 */
         <div class="note-h">総額の見込み</div>
         <ul>
           <li><span class="hl">約450,000円</span>　交通260,032円＋宿泊171,780円＋観光約18,000円（<span class="warn">飲食・お土産は別途</span>）</li>
-          <li>現地決済分もあるため、現金は多めに用意しておく。</li>
+          <li>現地決済分もあるため、現金は多めに用意しておく。<span class="hl">宿泊費（171,780円）はクレジットカード決済済み</span>。現金が必要なのはそらかぜ号15,500円・八経ヶ岳タクシー32,000円など</li>
         </ul>
       </div>
     </div>
@@ -503,10 +504,8 @@ body::before{ /* iPhoneのノッチ／Dynamic Island下の帯 */
       <div class="mt">
         <div class="mt-h">山データ</div>
         <div class="mt-route">伊吹山 1,377m ／ 西登山道-中央登山道 周回コース・9合目発着</div>
-        <div class="stats">
+        <div class="stats stats-3">
           <div class="s"><div class="n">1,377<span class="u">m</span></div><div class="l">標高</div></div>
-          <div class="s"><div class="n">142<span class="u">m</span></div><div class="l">登り距離</div></div>
-          <div class="s"><div class="n">136<span class="u">m</span></div><div class="l">下り距離</div></div>
           <div class="s"><div class="n">1:15</div><div class="l">コースタイム</div></div>
           <div class="s"><div class="n">3</div><div class="l">コース定数<br>やさしい</div></div>
         </div>
@@ -519,7 +518,7 @@ body::before{ /* iPhoneのノッチ／Dynamic Island下の帯 */
         <div class="tl" data-t="09:55"><div class="t-start">9:55</div><div class="t-dur">0:22</div><div class="t-ico"><svg class="ic"><use href="#i-walk"/></svg></div><div class="t-sum">中部国際空港 到着・駅へ</div><div class="t-det">伊吹山では昼食休憩が取れないので、空港内で<span class="hl">昼食と行動食を購入</span></div></div>
         <div class="tl" data-t="10:17"><div class="t-start">10:17</div><div class="t-dur">0:32</div><div class="t-ico"><svg class="ic"><use href="#i-train"/></svg></div><div class="t-sum">名鉄特急 中部国際空港→金山</div><div class="t-det">名鉄岐阜行・一部特別車／7駅。一般車はSuicaタッチのみで予約不要。指定席希望時のみミューチケット</div></div>
         <div class="tl" data-t="10:49"><div class="t-start">10:49</div><div class="t-dur">0:05</div><div class="t-ico"><svg class="ic"><use href="#i-swap"/></svg></div><div class="t-sum">金山駅 乗換</div><div class="t-det">徒歩約3分</div></div>
-        <div class="tl" data-t="10:54"><div class="t-start">10:54</div><div class="t-dur">0:39</div><div class="t-ico"><svg class="ic"><use href="#i-train"/></svg></div><div class="t-sum">東海道本線 新快速 金山→大垣</div><div class="t-det"><span class="hl">4番ホーム</span>／6駅</div></div>
+        <div class="tl" data-t="10:54"><div class="t-start">10:54</div><div class="t-dur">0:39</div><div class="t-ico"><svg class="ic"><use href="#i-train"/></svg></div><div class="t-sum">東海道本線 新快速 金山→大垣</div><div class="t-det"><span class="hl">4番ホーム</span>／6駅。車内で<span class="hl">関ケ原駅コインロッカーに預ける荷物をまとめておく</span></div></div>
         <div class="tl" data-t="11:33"><div class="t-start">11:33</div><div class="t-dur">0:08</div><div class="t-ico"><svg class="ic"><use href="#i-swap"/></svg></div><div class="t-sum">大垣駅 乗換</div><div class="t-det">徒歩約2分</div></div>
         <div class="tl" data-t="11:41"><div class="t-start">11:41</div><div class="t-dur">0:14</div><div class="t-ico"><svg class="ic"><use href="#i-train"/></svg></div><div class="t-sum">東海道本線 普通 大垣→関ケ原</div><div class="t-det">米原行・<span class="hl">1番ホーム</span>／2駅</div></div>
         <div class="tl" data-t="11:55"><div class="t-start">11:55</div><div class="t-dur">0:05</div><div class="t-ico"><svg class="ic"><use href="#i-bag"/></svg></div><div class="t-sum">関ケ原駅 コインロッカー</div><div class="t-det">登山に使わない荷物をここに預ける</div></div>
@@ -533,7 +532,7 @@ body::before{ /* iPhoneのノッチ／Dynamic Island下の帯 */
         <div class="tl" data-t="15:19"><div class="t-start">15:19</div><div class="t-dur">0:21</div><div class="t-ico"><svg class="ic"><use href="#i-train"/></svg></div><div class="t-sum">東海道本線 快速 関ケ原→米原</div><div class="t-det">米原行／4駅。<span class="warn">関ケ原はSuicaを使わず、券売機で彦根までの紙のきっぷ510円を購入</span>。TOICA・ICOCAのエリアをまたぐため通し乗車不可</div></div>
         <div class="tl" data-t="15:40"><div class="t-start">15:40</div><div class="t-dur">0:07</div><div class="t-ico"><svg class="ic"><use href="#i-swap"/></svg></div><div class="t-sum">米原駅 乗換</div><div class="t-det">徒歩約4分</div></div>
         <div class="tl" data-t="15:47"><div class="t-start">15:47</div><div class="t-dur">0:05</div><div class="t-ico"><svg class="ic"><use href="#i-train"/></svg></div><div class="t-sum">東海道線 新快速 米原→彦根</div><div class="t-det">播州赤穂行・<span class="hl">3番ホーム</span>／途中停車駅なし</div></div>
-        <div class="tl" data-t="15:52"><div class="t-start">15:52</div><div class="t-dur">0:18</div><div class="t-ico"><svg class="ic"><use href="#i-lodge"/></svg></div><div class="t-sum">サンルート彦根 チェックイン</div><div class="t-det">彦根駅西口すぐ。ひこにゃんルーム・61,800円 朝食付き・現地決済（<span class="warn">予約状況要確認</span>）</div></div>
+        <div class="tl" data-t="15:52"><div class="t-start">15:52</div><div class="t-dur">0:18</div><div class="t-ico"><svg class="ic"><use href="#i-lodge"/></svg></div><div class="t-sum">サンルート彦根 チェックイン</div><div class="t-det">彦根駅西口すぐ。ひこにゃんルーム（ツインルームA・禁煙）・61,800円 朝食付き・<span class="hl">クレジットカード決済済み</span></div></div>
         <div class="tl" data-t="16:10"><div class="t-start">16:10</div><div class="t-dur">1:50</div><div class="t-ico"><svg class="ic"><use href="#i-shop"/></svg></div><div class="t-sum">自由時間</div><div class="t-det">候補：<span class="hl">GiGO アル・プラザ彦根</span> 駅西口すぐ・平和堂4階／<span class="hl">三中井</span> 徒歩8分・洋菓子「オリンピア」／<span class="hl">&amp;Anne</span> 徒歩10分・菓心おおすがのセレクトショップ＆カフェ</div></div>
         <div class="tl" data-t="18:00"><div class="t-start">18:00</div><div class="t-dur">4:00</div><div class="t-ico"><svg class="ic"><use href="#i-fork"/></svg></div><div class="t-sum">夕食</div></div>
         <div class="tl stay" data-t="22:00"><div class="t-start">22:00</div><div class="t-dur">9:00</div><div class="t-ico"><svg class="ic"><use href="#i-moon"/></svg></div><div class="t-sum">就寝</div><div class="t-det">明日は彦根城観光のあと新幹線で名古屋へ</div></div>
@@ -580,7 +579,7 @@ body::before{ /* iPhoneのノッチ／Dynamic Island下の帯 */
         <div class="tl" data-t="19:50"><div class="t-start">19:50</div><div class="t-dur">0:10</div><div class="t-ico"><svg class="ic"><use href="#i-swap"/></svg></div><div class="t-sum">6号車ホームで待機</div></div>
         <div class="tl" data-t="20:00"><div class="t-start">20:00</div><div class="t-dur">1:38</div><div class="t-ico"><svg class="ic"><use href="#i-bullet"/></svg></div><div class="t-sum">ひのとり 近鉄名古屋→大和八木</div><div class="t-det">大阪難波ゆき・6号車 1A・1B・1C／4,600円 決済済・予約番号A23842。4,600円は特急料金のみで、乗車券分はSuica残高から自動精算。<span class="warn">残高チャージ要確認</span></div></div>
         <div class="tl" data-t="21:38"><div class="t-start">21:38</div><div class="t-dur">0:05</div><div class="t-ico"><svg class="ic"><use href="#i-walk"/></svg></div><div class="t-sum">大和八木駅→ホテル</div><div class="t-det">駅至近</div></div>
-        <div class="tl" data-t="21:43"><div class="t-start">21:43</div><div class="t-dur">0:47</div><div class="t-ico"><svg class="ic"><use href="#i-lodge"/></svg></div><div class="t-sum">CANDEO奈良橿原 チェックイン</div><div class="t-det">キングルーム・こあがりソファ有／109,980円 3日間朝食付・現地決済・予約済</div></div>
+        <div class="tl" data-t="21:43"><div class="t-start">21:43</div><div class="t-dur">0:47</div><div class="t-ico"><svg class="ic"><use href="#i-lodge"/></svg></div><div class="t-sum">CANDEO奈良橿原 チェックイン</div><div class="t-det">キングルーム・こあがりソファ有／109,980円 3日間朝食付・<span class="hl">クレジットカード決済済み</span></div></div>
         <div class="tl stay" data-t="22:30"><div class="t-start">22:30</div><div class="t-dur">8:30</div><div class="t-ico"><svg class="ic"><use href="#i-moon"/></svg></div><div class="t-sum">就寝</div><div class="t-det">荷物は夜のうちに分ける</div></div>
       </div>
       <div class="note">
